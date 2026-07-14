@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MEI sem Multas — Guia Definitivo 2026</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: #f5f0eb;
+    color: #2d3748;
+    min-height: 100vh;
+  }
+  .header {
+    background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+    color: #fff;
+    padding: 40px 20px;
+    text-align: center;
+    border-bottom: 4px solid #e53e3e;
+  }
+  .header h1 {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  .header h1 span { color: #fc8181; }
+  .header .sub {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 16px;
+    color: #a0aec0;
+    margin-top: 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .header .badge {
+    display: inline-block;
+    background: #e53e3e;
+    color: #fff;
+    padding: 4px 16px;
+    border-radius: 20px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 12px;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .nav-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+  }
+  .nav a {
+    display: inline-block;
+    padding: 14px 16px;
+    text-decoration: none;
+    color: #718096;
+    font-size: 13px;
+    font-weight: 600;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .nav a:hover, .nav a.active {
+    color: #e53e3e;
+    border-bottom-color: #e53e3e;
+  }
+  .chapter {
+    display: none;
+    background: #fff;
+    margin: 24px 0;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    line-height: 1.8;
+    font-size: 16px;
+  }
+  .chapter.active { display: block; }
+  .chapter h2 {
+    font-size: 26px;
+    color: #1a202c;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #e53e3e;
+  }
+  .chapter h3 {
+    font-size: 18px;
+    color: #2d3748;
+    margin: 20px 0 10px;
+  }
+  .chapter p { margin-bottom: 14px; }
+  .chapter ul, .chapter ol {
+    margin: 10px 0 16px 24px;
+  }
+  .chapter li { margin-bottom: 6px; }
+  .alert {
+    background: #fff5f5;
+    border-left: 4px solid #e53e3e;
+    padding: 16px 20px;
+    margin: 16px 0;
+    border-radius: 0 8px 8px 0;
+  }
+  .alert strong { color: #c53030; }
+  .dica {
+    background: #f0fff4;
+    border-left: 4px solid #48bb78;
+    padding: 16px 20px;
+    margin: 16px 0;
+    border-radius: 0 8px 8px 0;
+  }
+  .dica strong { color: #276749; }
+  .na-pratica {
+    background: #fffbeb;
+    border-left: 4px solid #ed8936;
+    padding: 16px 20px;
+    margin: 16px 0;
+    border-radius: 0 8px 8px 0;
+  }
+  .na-pratica strong { color: #9c4221; }
+  .valor-destaque {
+    display: inline-block;
+    background: #1a202c;
+    color: #fff;
+    padding: 2px 10px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-family: 'Segoe UI', Arial, sans-serif;
+  }
+  .checklist {
+    background: #f7fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 24px;
+    margin: 16px 0;
+  }
+  .checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid #edf2f7;
+    font-size: 15px;
+  }
+  .checklist-item:last-child { border-bottom: none; }
+  .checklist-item::before {
+    content: "☐";
+    font-size: 20px;
+    color: #e53e3e;
+    flex-shrink: 0;
+  }
+  .faq-item {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    margin: 10px 0;
+    overflow: hidden;
+  }
+  .faq-q {
+    background: #f7fafc;
+    padding: 14px 18px;
+    font-weight: 700;
+    font-size: 15px;
+    color: #2d3748;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .faq-q .arrow {
+    transition: transform 0.2s;
+    font-size: 12px;
+  }
+  .faq-q.open .arrow { transform: rotate(180deg); }
+  .faq-a {
+    display: none;
+    padding: 14px 18px;
+    font-size: 15px;
+    border-top: 1px solid #e2e8f0;
+    color: #4a5568;
+  }
+  .faq-a.open { display: block; }
+  .chapter-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e2e8f0;
+  }
+  .chapter-nav button {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .chapter-nav .prev {
+    background: #edf2f7;
+    color: #4a5568;
+  }
+  .chapter-nav .prev:hover { background: #e2e8f0; }
+  .chapter-nav .next {
+    background: #e53e3e;
+    color: #fff;
+  }
+  .chapter-nav .next:hover { background: #c53030; }
+  .footer-book {
+    text-align: center;
+    padding: 32px 20px;
+    color: #a0aec0;
+    font-size: 13px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+  }
+  .btn-print {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    display: inline-block;
+    padding: 8px 20px;
+    background: #718096;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 12px;
+  }
+  .btn-print:hover { background: #4a5568; }
+  @media (max-width: 600px) {
+    .header h1 { font-size: 26px; }
+    .chapter { padding: 24px 18px; }
+    .nav a { padding: 12px 12px; font-size: 12px; }
+  }
+  @media print {
+    .nav, .header, .chapter-nav, .btn-print, .footer-book { display: none; }
+    .chapter { display: block !important; page-break-after: always; box-shadow: none; margin: 0; padding: 20px 0; }
+    body { background: #fff; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>MEI <span>sem Multas</span></h1>
+  <div class="sub">O Guia Definitivo para Não Tomar Golpe da Receita</div>
+  <div class="badge">Atualizado 2026</div>
+</div>
+
+<div class="nav" id="topNav">
+  <div class="nav-inner">
+    <a href="#" class="active" data-chap="1">1. As 7 Multas</a>
+    <a href="#" data-chap="2">2. DAS Atrasado</a>
+    <a href="#" data-chap="3">3. Limite R$ 81 mil</a>
+    <a href="#" data-chap="4">4. Nota Fiscal</a>
+    <a href="#" data-chap="5">5. Declaração Anual</a>
+    <a href="#" data-chap="6">6. Atividades Proibidas</a>
+    <a href="#" data-chap="7">7. Checklist</a>
+    <a href="#" data-chap="8">8. FAQ</a>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="chapter active" id="chap1">
+  <h2>Capítulo 1 — As 7 Multas que Perseguem o MEI</h2>
+  <p>Ser MEI no Brasil é simples — até você errar. A Receita Federal não avisa, não liga, não manda WhatsApp. Um dia, você descobre que está devendo, que tomou multa, que seu CNPJ pode ser cancelado.</p>
+  <p>Este guia lista as <strong>7 multas mais comuns</strong> que perseguem o MEI, quanto custa cada erro e — principalmente — <strong>como evitar cada uma</strong>.</p>
+
+  <div class="alert">
+    <strong>&#9888; ALERTA:</strong> Todas as multas abaixo podem ser evitadas com organização. Você não precisa de contador — precisa de informação correta e rotina.
+  </div>
+
+  <h3>1. Atraso no pagamento do DAS</h3>
+  <p>A mais comum de todas. O DAS vence todo dia 20 de cada mês. Se atrasar, o sistema já calcula multa + juros automaticamente. Muitos MEIs atrasam "só um mês" e acumulam uma dívida que cresce rápido.</p>
+
+  <h3>2. Não emissão de nota fiscal</h3>
+  <p>Se você vende para outra empresa (PJ) e não emite nota, está sujeito a multa. A fiscalização cruzada da Receita pega a diferença entre o que você declarou e o que o seu cliente declarou — e a multa vem sem aviso.</p>
+
+  <h3>3. Faturamento acima do limite</h3>
+  <p>O teto do MEI é de <strong>R$ 81.000 por ano</strong> em 2026 (cerca de R$ 6.750/mês). Se você ultrapassar esse valor, é desenquadrado retroativamente — e pode ter que pagar a diferença de imposto como se fosse microempresa.</p>
+
+  <h3>4. Exercer atividade não permitida</h3>
+  <p>Nem toda profissão pode ser MEI. Advogados, médicos, engenheiros, contadores e várias outras categorias não podem se registrar como MEI. Se você exerce atividade não permitida, pode ser excluído e multado.</p>
+
+  <h3>5. Falta da declaração anual (DASN-SIMEI)</h3>
+  <p>Todo ano, você precisa declarar seu faturamento do ano anterior até 31 de maio. Se esquecer, a multa é de R$ 50 por mês de atraso. Se ficar 2 anos sem declarar, seu CNPJ pode ser cancelado de ofício.</p>
+
+  <h3>6. Nota fiscal com dados incorretos</h3>
+  <p>CNAE errado, valor errado, tomador errado — cada erro pode gerar multa. A fiscalização cruza dados e qualquer divergência vira notificação.</p>
+
+  <h3>7. Contratação de funcionário sem registro</h3>
+  <p>MEI pode ter até 1 funcionário registrado. Se você contrata alguém sem carteira assinada, é multa trabalhista + previdenciária. O valor pode chegar a milhares de reais.</p>
+
+  <div class="dica">
+    <strong>&#128161; DICA:</strong> A maioria dessas multas acontece por desinformação, não por má-fé. Este guia existe para que você saiba exatamente o que fazer — e o que não fazer.
+  </div>
+
+  <div class="chapter-nav">
+    <span></span>
+    <button class="next" onclick="irPara(2)">Próximo: DAS Atrasado &rarr;</button>
+  </div>
+</div>
+
+<div class="chapter" id="chap2">
+  <h2>Capítulo 2 — Multa por Atraso do DAS: Como Evitar</h2>
+
+  <p>O DAS (Documento de Arrecadação do Simples Nacional) é a conta mensal do MEI. Ela vence <strong>todo dia 20 de cada mês</strong> e inclui:</p>
+  <ul>
+    <li><strong>INSS:</strong> 5% do salário mínimo = <span class="valor-destaque">R$ 81,05</span></li>
+    <li><strong>ICMS</strong> (comércio/indústria): <span class="valor-destaque">R$ 1,00</span></li>
+    <li><strong>ISS</strong> (serviços): <span class="valor-destaque">R$ 5,00</span></li>
+  </ul>
+  <p>Total: de <strong>R$ 82,05 a R$ 87,05</strong> por mês — dependendo da sua atividade.</p>
+
+  <h3>O que acontece se atrasar?</h3>
+  <ul>
+    <li><strong>Multa:</strong> 0,33% ao dia sobre o valor do DAS (limitado a 20%)</li>
+    <li><strong>Juros:</strong> taxa SELIC vigente, calculada dia a dia</li>
+    <li><strong>Valor final:</strong> um DAS de R$ 82,05 atrasado 30 dias vira aproximadamente <strong>R$ 95,00</strong></li>
+  </ul>
+
+  <div class="na-pratica">
+    <strong>&#128221; NA PRÁTICA:</strong>
+    <br>Maria tem um salão de beleza. DAS dela é R$ 86,05. Ela atrasou 3 meses por que esqueceu. Cada mês virou ~R$ 100. Total da dívida: R$ 300. Se ela tivesse pago em dia: R$ 258,15. A diferença de R$ 41,85 foi completamente evitável.
+  </div>
+
+  <h3>Como pagar o DAS em atraso?</h3>
+  <ol>
+    <li>Acesse o <strong>Portal do Simples Nacional</strong> (www8.receita.fazenda.gov.br/SimplesNacional)</li>
+    <li>Clique em "Pagamento" → "Emitir DAS em atraso"</li>
+    <li>Informe o CNPJ, o mês de referência e o período</li>
+    <li>O sistema calcula automaticamente multa + juros</li>
+    <li>Gere o DAS e pague (QR Code PIX ou boleto)</li>
+  </ol>
+
+  <h3>Dívida acumulada? Tem solução</h3>
+  <p>Se você está devendo vários meses, pode <strong>parcelar em até 60 vezes</strong>. O parcelamento é feito no próprio portal do Simples Nacional. O valor mínimo da parcela é de R$ 50,00.</p>
+
+  <div class="dica">
+    <strong>&#128161; DICA INFALÍVEL:</strong> Ative o <strong>débito automático</strong> no seu banco (Caixa, Banco do Brasil ou qualquer app de pagamento). Ou use a Planilha MEI com lembrete. O DAS é um valor fixo e previsível — não tem desculpa para atrasar.
+  </div>
+
+  <div class="chapter-nav">
+    <button class="prev" onclick="irPara(1)">&larr; Anterior</button>
+    <button class="next" onclick="irPara(3)">Próximo: Limite de R$ 81 mil &rarr;</button>
+  </div>
+</div>
+
+<div class="chapter" id="chap3">
+  <h2>Capítulo 3 — Limite de R$ 81.000: O Perigo Silencioso</h2>
+
+  <p>O MEI tem um teto de faturamento: <strong>R$ 81.000 por ano</strong> (média de R$ 6.750/mês). Esse valor <strong>não é reajustado desde 2018</strong> — ou seja, a cada ano, mais MEIs estouram o limite sem perceber.</p>
+
+  <div class="alert">
+    <strong>&#9888; PERIGO:</strong> Se você ultrapassar R$ 81.000 em um ano, é <strong>desenquadrado retroativamente</strong>. Isso significa que você vira microempresa (ME) desde o início do ano — e precisa pagar a diferença de imposto como se fosse ME. Essa conta pode chegar a <strong>milhares de reais</strong>.
+  </div>
+
+  <h3>Sinais de alerta</h3>
+  <ul>
+    <li>Sua média mensal está acima de R$ 6.750</li>
+    <li>Você está crescendo e vendendo mais a cada mês</li>
+    <li>Você tem mais de um negócio ou fonte de renda no mesmo CNPJ</li>
+    <li>Está perto de novembro/dezembro e já ultrapassou R$ 70 mil no ano</li>
+  </ul>
+
+  <h3>O que fazer se estiver perto do limite?</h3>
+  <ol>
+    <li><strong>Reduza o ritmo</strong> — você pode emitir menos notas nos últimos meses do ano</li>
+    <li><strong>Abra um segundo CNPJ</strong> — se sua atividade permite, abra outro MEI para o cônjuge ou familiar</li>
+    <li><strong>Migre para ME</strong> — se o faturamento for consistentemente acima de R$ 81 mil, vire microempresa com contador</li>
+  </ol>
+
+  <h3>PLP em tramitação</h3>
+  <p>Existe um projeto de lei para aumentar o teto do MEI para <strong>R$ 110 mil (2027) e R$ 140 mil (2028)</strong>. Mas até julho de 2026, <strong>ainda não foi aprovado</strong>. O limite continua em R$ 81.000 — não conte com o aumento para planejar seu ano.</p>
+
+  <div class="na-pratica">
+    <strong>&#128221; NA PRÁTICA:</strong>
+    <br>João vende artesanato online. Em setembro de 2025, ele já tinha faturado R$ 73 mil. Achou que dava tempo de vender mais R$ 10 mil até dezembro. Em janeiro de 2026, recebeu a notificação: desenquadrado retroativo. A conta: R$ 4.200 de imposto complementar. Tudo porque não monitorou o limite.
+  </div>
+
+  <div class="chapter-nav">
+    <button class="prev" onclick="irPara(2)">&larr; Anterior</button>
+    <button class="next" onclick="irPara(4)">Próximo: Nota Fiscal &rarr;</button>
+  </div>
+</div>
+
+<div class="chapter" id="chap4">
+  <h2>Capítulo 4 — Nota Fiscal: O Erro que Sai Caro</h2>
+
+  <p>Emitir nota fiscal é obrigatório quando você vende para <strong>pessoa jurídica (PJ)</strong>. Para pessoa física (PF), você pode emitir, mas não é obrigado — a não ser que o cliente peça.</p>
+
+  <h3>Obrigações e prazos</h3>
+  <ul>
+    <li>Emitir a nota <strong>em até 24h</strong> após a venda ou prestação do serviço</li>
+    <li>Guardar o <strong>XML + PDF</strong> de todas as notas emitidas por <strong>5 anos</strong></li>
+    <li>Usar o <strong>CNAE correto</strong> correspondente à sua atividade</li>
+  </ul>
+
+  <h3>Multas por erro na nota fiscal</h3>
+  <ul>
+    <li><strong>Não emitir nota para PJ:</strong> multa de 2% a 30% do valor da operação (varia por estado)</li>
+    <li><strong>CNAE incorreto:</strong> multa de 100% a 300% do valor do imposto devido</li>
+    <li><strong>Valor menor que o real:</strong> configura sonegação — multa de 75% a 225% sobre a diferença</li>
+  </ul>
+
+  <div class="na-pratica">
+    <strong>&#128221; EXEMPLO REAL (SP):</strong>
+    <br>Venda de R$ 1.000 para uma empresa sem emitir nota em São Paulo. Multa: 20% = R$ 200. Se for reincidência, a multa sobe para 30% = R$ 300. Tudo porque a nota não foi emitida.
+  </div>
+
+  <h3>Como corrigir nota emitida errada?</h3>
+  <ol>
+    <li><strong>Cancelamento:</strong> prazo de 24h a 7 dias (depende do estado e do tipo de nota)</li>
+    <li><strong>Nota de correção (NFC-e):</strong> para produtos, é possível emitir carta de correção</li>
+    <li><strong>NFS-e:</strong> para serviços, o cancelamento é feito no portal da prefeitura</li>
+  </ol>
+
+  <div class="dica">
+    <strong>&#128161; DICA:</strong> Use um emissor de nota fiscal gratuito. A SEFAZ do seu estado oferece um emissor sem custo. Ou use apps como NFS-e Fácil, Nota Fiscal Fácil, ou o portal gov.br/nfse. Não pague por emissor — você tem direito ao gratuito como MEI.
+  </div>
+
+  <div class="chapter-nav">
+    <button class="prev" onclick="irPara(3)">&larr; Anterior</button>
+    <button class="next" onclick="irPara(5)">Próximo: Declaração Anual &rarr;</button>
+  </div>
+</div>
+
+<div class="chapter" id="chap5">
+  <h2>Capítulo 5 — Declaração Anual (DASN-SIMEI): Não Esqueça</h2>
+
+  <p>A Declaração Anual do MEI (DASN-SIMEI) é obrigatória <strong>todo ano, até 31 de maio</strong>. Nela, você informa o faturamento bruto total do ano anterior.</p>
+
+  <h3>O que declarar?</h3>
+  <ul>
+    <li>O valor <strong>total</strong> que você faturou no ano anterior (soma de TODAS as vendas)</li>
+    <li>Se teve funcionário: informar os dados</li>
+    <li>Se não teve faturamento (R$ 0,00): ainda assim precisa declarar</li>
+  </ul>
+
+  <h3>Multa por atraso</h3>
+  <div class="alert">
+    <strong>&#9888; Multa: R$ 50 por mês de atraso</strong> (limitada a 20% do valor devido). Se você ficar 6 meses sem declarar: R$ 300 de multa.
+  </div>
+
+  <h3>Consequências de não declarar</h3>
+  <ul>
+    <li><strong>1 ano sem declarar:</strong> multa + restrições no CPF</li>
+    <li><strong>2 anos consecutivos:</strong> CNPJ pode ser <strong>baixado de ofício</strong> — você perde o CNPJ sem aviso</li>
+    <li><strong>Dívida ativa:</strong> a multa não paga vai para a Dívida Ativa da União — e seu nome vai para protesto</li>
+  </ul>
+
+  <h3>Passo a passo para declarar</h3>
+  <ol>
+    <li>Acesse o <strong>Portal do Empreendedor</strong> (www.gov.br/empresas-e-negocios)</li>
+    <li>Clique em "Declaração Anual do MEI (DASN-SIMEI)"</li>
+    <li>Faça login com seu <strong>CNPJ + código de acesso</strong> ou <strong>gov.br</strong></li>
+    <li>Informe o faturamento total do ano anterior</li>
+    <li>Confirme e transmita</li>
+    <li>Salve o <strong>comprovante de entrega</strong> (guarde por 5 anos)</li>
+  </ol>
+
+  <div class="dica">
+    <strong>&#128161; DICA:</strong> Anote no calendário: "31 de maio — declarar MEI". Coloque 3 lembretes: 1 mês antes, 1 semana antes e no dia. Ou use a Planilha MEI, que já tem o controle mensal do faturamento — na hora de declarar é só somar.
+  </div>
+
+  <div class="chapter-nav">
+    <button class="prev" onclick="irPara(4)">&larr; Anterior</button>
+    <button class="next" onclick="irPara(6)">Próximo: Atividades Proibidas &rarr;</button>
+  </div>
+</div>
+
+<div class="chapter" id="chap6">
+  <h2>Capítulo 6 — Atividades Não Permitidas no MEI</h2>
+
+  <p>Nem toda profissão pode ser MEI. A lei lista as atividades permitidas — e tudo que está fora dessa lista exige outro tipo de empresa (ME, EI, etc.).</p>
+
+  <h3>Atividades que NÃO podem ser MEI</h3>
+  <ul>
+    <li><strong>Profissões regulamentadas:</strong> advogado, médico, engenheiro, arquiteto, contador, jornalista, psicólogo, dentista, enfermeiro</li>
+    <li><strong>Corretagem:</strong> corretor de imóveis, de seguros, de investimentos</li>
+    <li><strong>Transporte aéreo e marítimo</strong></li>
+    <li><strong>Importação e exportação</strong> sem autorização específica</li>
+    <li><strong>Serviço público</strong> (servidor público como MEI? Depende do cargo — maioria não pode)</li>
+    <li><strong>Sociedade empresarial:</strong> MEI é individual — não pode ter sócio</li>
+  </ul>
+
+  <div class="alert">
+    <strong>&#9888; RISCO:</strong> Se você exerce atividade não permitida como MEI, a Receita pode:
+    <br>• <strong>Excluir</strong> seu CNPJ do MEI
+    <br>• Aplicar <strong>multa de 10% a 30%</strong> da receita bruta do período
+    <br>• Cobrar <strong>diferença de impostos retroativamente</strong> como se você fosse ME
+  </div>
+
+  <h3>Como saber se sua atividade é permitida?</h3>
+  <ol>
+    <li>Acesse o <strong>Portal do Empreendedor</strong></li>
+    <li>Consulte a lista de ocupações permitidas (são mais de 400)</li>
+    <li>Procure sua profissão pelo nome ou pelo CNAE</li>
+    <li>Se sua atividade não estiver na lista, você <strong>não pode ser MEI</strong></li>
+  </ol>
+
+  <h3>O que fazer se sua atividade não é permitida?</h3>
+  <ul>
+    <li><strong>Migrar para ME (Microempresa):</strong> o custo é maior (contador + impostos), mas você pode exercer legalmente</li>
+    <li><strong>Abrir como EI (Empresário Individual):</strong> para profissionais liberais</li>
+    <li><strong>Consultar um contador:</strong> para escolher o melhor enquadramento</li>
+  </ul>
+
+  <div class="na-pratica">
+    <strong>&#128221; NA PRÁTICA:</strong>
+    <br>Carlos é fotógrafo e abriu MEI sem saber que fotógrafo pode ser MEI (CNAE 7420-0/01). Atualizou o contrato social e está regular. Já Renata é arquiteta e abriu MEI — atividade não permitida. Recebeu notificação de exclusão e multa de R$ 3.200 sobre o faturamento do período. A diferença? Uma consulta de 5 minutos no Portal do Empreendedor.
+  </div>
+
+  <div class="chapter-nav">
+    <button class="prev" onclick="irPara(5)">&larr; Anterior</button>
+    <button class="next" onclick="irPara(7)">Próximo: Checklist &rarr;</button>
+  </div>
+</div>
+
+<div class="chapter" id="chap7">
+  <h2>Capítulo 7 — Checklist Anual do MEI sem Multas</h2>
+
+  <p>Uma página para consultar todo mês. Mantenha este checklist visível no seu mural, bloco de notas ou dentro da Planilha MEI.</p>
+
+  <div class="checklist">
+    <div class="checklist-item">DAS pago todo dia 20 (ou débito automático ativado)</div>
+    <div class="checklist-item">Notas fiscais emitidas em até 24h para vendas a PJ</div>
+    <div class="checklist-item">XML + PDF de todas as notas guardados (nuvem ou HD)</div>
+    <div class="checklist-item">Faturamento mensal controlado (abaixo de R$ 6.750/mês)</div>
+    <div class="checklist-item">Declaração anual (DASN-SIMEI) feita até 31 de maio</div>
+    <div class="checklist-item">Atividade exercida é permitida no MEI (confira no Portal)</div>
+    <div class="checklist-item">Dados cadastrais atualizados no Portal do Empreendedor</div>
+    <div class="checklist-item">Limite de R$ 81.000 monitorado mês a mês</div>
+    <div class="checklist-item">Débitos em aberto? Consulte regularmente o Portal do Simples Nacional</div>
+    <div class="checklist-item">Se tem funcionário: guia FGTS + INSS em dia</div>
+  </div>
+
+  <div class="dica">
+    <strong>&#128161; DICA DE OURO:</strong> Imprima este checklist e marque um item por semana. Em 10 semanas, sua rotina de MEI estará blindada contra multas. Ou use a Planilha MEI, que já inclui esse controle automático.
+  </div>
+
+  <div class="chapter-nav">
+    <button class="prev" onclick="irPara(6)">&larr; Anterior</button>
+    <button class="next" onclick="irPara(8)">Próximo: FAQ &rarr;</button>
+  </div>
+</div>
+
+<div class="chapter" id="chap8">
+  <h2>Capítulo 8 — FAQ: Perguntas que Todo MEI Tem Medo de Fazer</h2>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFAQ(this)">
+      <span>Qual a multa se eu atrasar o DAS 1 dia?</span>
+      <span class="arrow">&#9660;</span>
+    </div>
+    <div class="faq-a">Multa de 0,33% sobre o valor do DAS + juros SELIC do período. Na prática: um DAS de R$ 82,05 atrasado 1 dia vira aproximadamente R$ 82,40. Quase nada — mas se acumular, cresce rápido.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFAQ(this)">
+      <span>Posso parcelar o DAS atrasado?</span>
+      <span class="arrow">&#9660;</span>
+    </div>
+    <div class="faq-a">Sim. Dívidas do MEI podem ser parceladas em até 60 vezes no Portal do Simples Nacional. O valor mínimo da parcela é R$ 50,00. O parcelamento inclui multa e juros.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFAQ(this)">
+      <span>A Receita vai me multar se eu esquecer uma nota?</span>
+      <span class="arrow">&#9660;</span>
+    </div>
+    <div class="faq-a">Depende. Se a venda foi para PJ e você não emitiu nota, sim — a fiscalização cruzada eventualmente pega. Se foi para PF, a obrigação é menor, mas o cliente pode pedir a nota e você precisa emitir.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFAQ(this)">
+      <span>Como sei se estou perto do limite de R$ 81.000?</span>
+      <span class="arrow">&#9660;</span>
+    </div>
+    <div class="faq-a">Some todo o seu faturamento do ano. Se passou de R$ 6.750 de média mensal, está no vermelho. A Planilha MEI tem um marcador automático que mostra quanto % do limite você já usou.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFAQ(this)">
+      <span>Precisa de contador para evitar multa?</span>
+      <span class="arrow">&#9660;</span>
+    </div>
+    <div class="faq-a">Não. O MEI foi criado para ser simples justamente para não precisar de contador. Com organização, controle mensal e este guia, você evita 100% das multas sem pagar contador.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFAQ(this)">
+      <span>O que fazer se eu receber uma notificação da Receita?</span>
+      <span class="arrow">&#9660;</span>
+    </div>
+    <div class="faq-a">Não ignore. Acesse o Portal do Simples Nacional, verifique o débito, e pague ou parcele. Se a notificação for por outro motivo (ex: atividade não permitida), consulte um contador para regularizar.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFAQ(this)">
+      <span>Perdi o prazo da declaração anual, e agora?</span>
+      <span class="arrow">&#9660;</span>
+    </div>
+    <div class="faq-a">Declare ainda assim. Quanto antes você declarar, menor a multa (R$ 50 por mês de atraso). A declaração em atraso é feita no mesmo portal — a multa é calculada automaticamente.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFAQ(this)">
+      <span>Minha atividade não está na lista do MEI, o que fazer?</span>
+      <span class="arrow">&#9660;</span>
+    </div>
+    <div class="faq-a">Você não pode ser MEI. Precisa abrir como ME (Microempresa) ou EI (Empresário Individual) com contador. Continuar como MEI com atividade proibida gera multa e exclusão do CNPJ.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFAQ(this)">
+      <span>Posso ter dois CNPJs como MEI?</span>
+      <span class="arrow">&#9660;</span>
+    </div>
+    <div class="faq-a">Não. Cada CPF só pode ter um MEI. Se você precisa de outro CNPJ, pode abrir uma ME no nome do cônjuge, familiar ou sócio. Ou migrar para ME, que permite múltiplas atividades.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFAQ(this)">
+      <span>Se eu fechar o MEI, as multas prescrevem?</span>
+      <span class="arrow">&#9660;</span>
+    </div>
+    <div class="faq-a">Não. As dívidas não prescrevem com o fechamento. A Receita pode cobrar judicialmente e seu CPF fica com restrições. Antes de fechar, quite todos os débitos ou parcele.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFAQ(this)">
+      <span>Como consultar se tenho débitos em aberto?</span>
+      <span class="arrow">&#9660;</span>
+    </div>
+    <div class="faq-a">Acesse o Portal do Simples Nacional → "Consulta Extrato/Pendências". Informe seu CNPJ. Lá você vê todos os DAS em aberto, declarações pendentes e notificações. Faça essa consulta a cada 3 meses.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFAQ(this)">
+      <span>Vale a pena pagar um contador só para evitar multas?</span>
+      <span class="arrow">&#9660;</span>
+    </div>
+    <div class="faq-a">Para o MEI padrão, não. A simplicidade do regime permite que você mesmo gerencie. Contador só vale a pena se: faturar perto do limite todo mês, tiver funcionário, ou precisar migrar para ME.</div>
+  </div>
+
+  <div class="chapter-nav">
+    <button class="prev" onclick="irPara(7)">&larr; Anterior</button>
+    <span></span>
+  </div>
+</div>
+
+<div style="text-align:center; margin: 20px 0;">
+  <button class="btn-print" onclick="window.print()">&#128424; Imprimir E-book Completo</button>
+</div>
+
+</div>
+
+<div class="footer-book">
+  MEI sem Multas — Guia Definitivo 2026 &mdash; Atualizado com valores oficiais de 2026<br>
+  Salário mínimo R$ 1.621 | DAS R$ 82,05 a R$ 87,05 | Limite anual R$ 81.000
+</div>
+
+<script>
+function irPara(n) {
+  document.querySelectorAll('.chapter').forEach(c => c.classList.remove('active'));
+  document.getElementById('chap' + n).classList.add('active');
+  document.querySelectorAll('.nav a').forEach(a => a.classList.remove('active'));
+  document.querySelector('.nav a[data-chap="' + n + '"]').classList.add('active');
+  window.scrollTo({ top: 120, behavior: 'smooth' });
+}
+
+document.querySelectorAll('.nav a').forEach(a => {
+  a.addEventListener('click', function(e) {
+    e.preventDefault();
+    irPara(parseInt(this.dataset.chap));
+  });
+});
+
+function toggleFAQ(el) {
+  el.classList.toggle('open');
+  const answer = el.nextElementSibling;
+  answer.classList.toggle('open');
+}
+</script>
+</body>
+</html>
