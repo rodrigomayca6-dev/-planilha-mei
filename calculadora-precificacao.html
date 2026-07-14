@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Precificação para MEI</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f0f4f8;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  .container {
+    max-width: 1100px;
+    width: 100%;
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    padding: 40px;
+  }
+  h1 {
+    font-size: 28px;
+    color: #1a202c;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  h1 span { font-size: 32px; }
+  .subtitle {
+    color: #718096;
+    font-size: 15px;
+    margin-bottom: 32px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  @media (max-width: 700px) {
+    .grid { grid-template-columns: 1fr; }
+    .container { padding: 20px; }
+  }
+  .card {
+    background: #f7fafc;
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .card h2 {
+    font-size: 16px;
+    color: #2d3748;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e2e8f0;
+  }
+  .input-group {
+    margin-bottom: 16px;
+  }
+  .input-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 4px;
+  }
+  .input-group .hint {
+    font-size: 11px;
+    color: #a0aec0;
+    margin-bottom: 4px;
+  }
+  .input-group input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 15px;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .input-group input:focus {
+    border-color: #48bb78;
+  }
+  .input-group input[type="number"] {
+    -moz-appearance: textfield;
+  }
+  .input-group input[type="number"]::-webkit-inner-spin-button,
+  .input-group input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+  }
+  .results {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .result-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    border: 1px solid #e2e8f0;
+  }
+  .result-label {
+    font-size: 12px;
+    color: #a0aec0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+  }
+  .result-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #2d3748;
+    margin-top: 4px;
+  }
+  .result-value .cents {
+    font-size: 18px;
+  }
+  .status {
+    margin-top: 20px;
+    padding: 16px 20px;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 18px;
+    display: none;
+  }
+  .status.lucro {
+    background: #c6f6d5;
+    color: #22543d;
+    display: block;
+  }
+  .status.zero {
+    background: #fefcbf;
+    color: #744210;
+    display: block;
+  }
+  .status.prejuizo {
+    background: #fed7d7;
+    color: #822727;
+    display: block;
+  }
+  .breakdown {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed #e2e8f0;
+  }
+  .breakdown-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    padding: 4px 0;
+    color: #4a5568;
+  }
+  .breakdown-item .val { font-weight: 600; }
+  .btn {
+    display: inline-block;
+    padding: 10px 24px;
+    background: #48bb78;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 8px;
+  }
+  .btn:hover { background: #38a169; }
+  .btn-outline {
+    background: transparent;
+    color: #4a5568;
+    border: 2px solid #e2e8f0;
+  }
+  .btn-outline:hover { background: #f7fafc; }
+  .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+  .footer {
+    margin-top: 24px;
+    text-align: center;
+    color: #a0aec0;
+    font-size: 12px;
+  }
+  .badge {
+    display: inline-block;
+    background: #48bb78;
+    color: #fff;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-left: 8px;
+  }
+  .badge-2026 {
+    background: #ed8936;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1><span>&#9889;</span> Calculadora de Precificação <span class="badge badge-2026">2026</span></h1>
+  <p class="subtitle">Descubra o preço ideal para seus produtos e serviços — e veja se você está tendo lucro real</p>
+
+  <div class="grid">
+    <div class="card">
+      <h2>&#128221; Dados do Produto / Serviço</h2>
+
+      <div class="input-group">
+        <label>Custo direto (R$)</label>
+        <div class="hint">Material, insumo, frete, embalagem — tudo que é gasto por unidade</div>
+        <input type="number" id="custo" value="10.00" step="0.01" min="0" oninput="calcular()">
+      </div>
+
+      <div class="input-group">
+        <label>Custos fixos mensais (R$)</label>
+        <div class="hint">Aluguel, internet, telefone, energia, pró-labore, assinaturas</div>
+        <input type="number" id="fixos" value="800.00" step="0.01" min="0" oninput="calcular()">
+      </div>
+
+      <div class="input-group">
+        <label>Vendas estimadas por mês</label>
+        <div class="hint">Quantas unidades/vendas você faz por mês</div>
+        <input type="number" id="vendas" value="50" step="1" min="1" oninput="calcular()">
+      </div>
+
+      <div class="input-group">
+        <label>Margem de lucro desejada (%)</label>
+        <div class="hint">Quanto você quer lucrar sobre cada venda</div>
+        <input type="number" id="margem" value="30" step="0.1" min="0" oninput="calcular()">
+      </div>
+
+      <div class="input-group">
+        <label>Impostos (%)</label>
+        <div class="hint">DAS + outros — MEI padrão: ~5% sobre salário mínimo (valor fixo, não porcentual)</div>
+        <input type="number" id="impostos" value="0" step="0.1" min="0" oninput="calcular()">
+      </div>
+
+      <div class="input-group">
+        <label>Taxas / Comissões (%)</label>
+        <div class="hint">Taxa de cartão, marketplace, comissão de parceiros</div>
+        <input type="number" id="taxas" value="3.99" step="0.01" min="0" oninput="calcular()">
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="calcular()">&#128269; Calcular</button>
+        <button class="btn btn-outline" onclick="window.print()">&#128424; Imprimir</button>
+      </div>
+    </div>
+
+    <div class="results" id="resultados">
+      <div class="result-card">
+        <div class="result-label">Preço de Venda Ideal</div>
+        <div class="result-value" id="precoIdeal">R$ 0,00</div>
+      </div>
+      <div class="result-card">
+        <div class="result-label">Preço Mínimo (break-even)</div>
+        <div class="result-value" id="precoMinimo">R$ 0,00</div>
+      </div>
+      <div class="result-card">
+        <div class="result-label">Lucro Líquido por Unidade</div>
+        <div class="result-value" id="lucroUnidade">R$ 0,00</div>
+      </div>
+      <div class="result-card">
+        <div class="result-label">Lucro Líquido Mensal</div>
+        <div class="result-value" id="lucroMensal">R$ 0,00</div>
+      </div>
+      <div class="result-card">
+        <div class="result-label">Ponto de Equilíbrio</div>
+        <div class="result-value" id="pontoEquilibrio">0 un./mês</div>
+      </div>
+      <div class="result-card" id="cardMargemReal">
+        <div class="result-label">Margem Real (%)</div>
+        <div class="result-value" id="margemReal">0%</div>
+        <div class="breakdown" id="breakdown">
+          <div class="breakdown-item"><span>Custo direto por unidade</span><span class="val" id="bdCusto">R$ 0,00</span></div>
+          <div class="breakdown-item"><span>Custo fixo por unidade</span><span class="val" id="bdFixo">R$ 0,00</span></div>
+          <div class="breakdown-item"><span>Custo total por unidade</span><span class="val" id="bdTotal">R$ 0,00</span></div>
+          <div class="breakdown-item"><span>Taxas por unidade</span><span class="val" id="bdTaxas">R$ 0,00</span></div>
+          <div class="breakdown-item" style="font-weight:700;color:#2d3748"><span>Lucro por unidade</span><span class="val" id="bdLucro">R$ 0,00</span></div>
+        </div>
+      </div>
+      <div class="status" id="status"></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Calculadora de Precificação para MEI &mdash; Valores de referência 2026 &mdash; DAS R$ 82,05 a R$ 87,05 &mdash; Salário mínimo R$ 1.621
+  </div>
+</div>
+
+<script>
+function fmt(v) {
+  return 'R$ ' + v.toFixed(2).replace('.', ',');
+}
+
+function calcular() {
+  const custo = parseFloat(document.getElementById('custo').value) || 0;
+  const fixos = parseFloat(document.getElementById('fixos').value) || 0;
+  const vendas = parseFloat(document.getElementById('vendas').value) || 1;
+  const margem = parseFloat(document.getElementById('margem').value) || 0;
+  const impostos = parseFloat(document.getElementById('impostos').value) || 0;
+  const taxas = parseFloat(document.getElementById('taxas').value) || 0;
+
+  const custoFixoUnit = fixos / vendas;
+  const custoTotalUnit = custo + custoFixoUnit;
+  const taxaTotal = (margem + impostos + taxas) / 100;
+
+  let precoIdeal = 0;
+  if (taxaTotal < 1) {
+    precoIdeal = custoTotalUnit / (1 - taxaTotal);
+  } else {
+    precoIdeal = custoTotalUnit * 10;
+  }
+
+  const txTaxas = taxas / 100;
+  const precoMinimo = (custoTotalUnit) / (1 - txTaxas);
+
+  const valorTaxas = precoIdeal * (taxas / 100);
+  const lucroUnit = precoIdeal - custoTotalUnit - valorTaxas - (precoIdeal * (impostos / 100));
+  const lucroMensal = lucroUnit * vendas;
+
+  const margemRealPct = precoIdeal > 0 ? (lucroUnit / precoIdeal) * 100 : 0;
+
+  const pe = (precoIdeal - custo - (precoIdeal * (taxas / 100)) - (precoIdeal * (impostos / 100))) > 0
+    ? Math.ceil(fixos / (precoIdeal - custo - (precoIdeal * (taxas / 100)) - (precoIdeal * (impostos / 100))))
+    : 9999;
+
+  document.getElementById('precoIdeal').innerHTML = fmt(precoIdeal);
+  document.getElementById('precoMinimo').innerHTML = fmt(precoMinimo);
+  document.getElementById('lucroUnidade').innerHTML = fmt(lucroUnit);
+  document.getElementById('lucroMensal').innerHTML = fmt(lucroMensal);
+  document.getElementById('pontoEquilibrio').innerHTML = pe + ' un./mês';
+  document.getElementById('margemReal').innerHTML = margemRealPct.toFixed(1) + '%';
+
+  document.getElementById('bdCusto').textContent = fmt(custo);
+  document.getElementById('bdFixo').textContent = fmt(custoFixoUnit);
+  document.getElementById('bdTotal').textContent = fmt(custoTotalUnit);
+  document.getElementById('bdTaxas').textContent = fmt(valorTaxas);
+  document.getElementById('bdLucro').textContent = fmt(lucroUnit);
+
+  const status = document.getElementById('status');
+  if (lucroUnit <= 0) {
+    status.className = 'status prejuizo';
+    status.textContent = '&#9888; PREJUÍZO — Você está perdendo dinheiro em cada venda!';
+  } else if (margemRealPct < 5) {
+    status.className = 'status zero';
+    status.textContent = '&#9888; QUASE ZERO — Sua margem real está muito baixa. Reveja seus custos ou aumente o preço.';
+  } else if (margemRealPct < margem * 0.5) {
+    status.className = 'status zero';
+    status.textContent = '&#9888; ABAIXO DA META — Seu lucro real está bem abaixo da margem desejada de ' + margem + '%.';
+  } else {
+    status.className = 'status lucro';
+    status.textContent = '&#9989; LUCRO REAL — Sua margem real de ' + margemRealPct.toFixed(1) + '% está saudável!';
+  }
+}
+
+calcular();
+</script>
+</body>
+</html>
