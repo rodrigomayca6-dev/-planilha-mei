@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kit Contratos para MEI — 10 Modelos Editáveis</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter','Segoe UI',system-ui,sans-serif;background:#f0f2f5;color:#1a1a2e;padding:0}
+.header{background:linear-gradient(135deg,#0a1628,#16213e,#1a1a5e);color:#fff;padding:30px 28px 20px;text-align:center}
+.header h1{font-size:24px;font-weight:800}
+.header h1 span{color:#00E676}
+.header p{font-size:13px;opacity:.7;margin-top:4px}
+.header .ano{display:inline-block;background:rgba(0,230,118,.15);color:#00E676;padding:2px 12px;border-radius:12px;font-size:11px;font-weight:600;margin-top:8px}
+.nav-contratos{background:#fff;display:flex;flex-wrap:wrap;border-bottom:1px solid #e0e0e0;padding:0 16px;gap:2px}
+.nav-contratos button{padding:12px 14px;border:none;background:none;font-size:11px;font-weight:600;color:#777;cursor:pointer;border-bottom:2px solid transparent;transition:.15s;white-space:nowrap}
+.nav-contratos button:hover{color:#0f3460;background:#f5f7fa}
+.nav-contratos button.ativo{color:#0f3460;border-bottom-color:#0f3460;background:#f0f4ff}
+.conteudo{max-width:900px;margin:0 auto;padding:24px 20px}
+.contrato{display:none;background:#fff;border-radius:12px;padding:30px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.contrato.ativo{display:block}
+.contrato h2{font-size:20px;font-weight:700;color:#0f3460;margin-bottom:4px}
+.contrato .subtitulo{font-size:12px;color:#888;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid #eee}
+.contrato p{font-size:14px;line-height:1.8;color:#333;margin-bottom:6px}
+.contrato .campo{display:inline-block;min-width:140px;border:none;border-bottom:2px dashed #0f3460;background:transparent;font-size:14px;font-family:inherit;padding:2px 6px;color:#0f3460;font-weight:600;outline:none}
+.contrato .campo:focus{border-bottom-color:#00E676;background:#f0fdf4}
+.contrato .campo-grande{min-width:250px}
+.contrato .campo-menor{min-width:80px}
+.contrato .clausula{margin:16px 0;padding:14px 16px;background:#f8faff;border-radius:8px;border-left:3px solid #0f3460}
+.contrato .clausula .num{font-weight:700;color:#0f3460;font-size:13px}
+.contrato .clausula p{margin:4px 0 0 0;font-size:13px}
+.contrato .assinatura{margin-top:28px;padding-top:16px;border-top:2px solid #eee;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.contrato .assinatura div{text-align:center}
+.contrato .assinatura .linha{border-top:1px solid #333;padding-top:6px;margin-top:30px;font-size:12px;color:#666}
+.acoes{display:flex;gap:8px;justify-content:center;margin:16px 0 24px;flex-wrap:wrap}
+.acoes button{padding:10px 24px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:.2s}
+.btn-imprimir{background:#0f3460;color:#fff}
+.btn-imprimir:hover{background:#16213e}
+.btn-limpar{background:#f0f2f5;color:#555}
+.btn-limpar:hover{background:#e0e0e0}
+.instrucao{background:#e8f4fd;border-radius:8px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:#333;border-left:4px solid #0f3460}
+.instrucao strong{color:#0f3460}
+@media(max-width:600px){
+.header{padding:20px 16px 14px}
+.header h1{font-size:18px}
+.conteudo{padding:12px}
+.contrato{padding:16px}
+.contrato .campo{min-width:100px}
+.contrato .assinatura{grid-template-columns:1fr}
+.nav-contratos button{font-size:10px;padding:10px 10px}
+}
+@media print{body{background:#fff}.header,.nav-contratos,.acoes,.instrucao{display:none!important}.conteudo{padding:0}.contrato{display:block!important;box-shadow:none;padding:20px;border:none;border-radius:0}.contrato .campo{border-bottom:1px solid #999;min-width:120px}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📋 Kit <span>Contratos para MEI</span></h1>
+  <p>10 modelos editáveis — Preencha, imprima e use</p>
+  <div class="ano">Atualizado 2026</div>
+</div>
+
+<div class="nav-contratos" id="navContratos">
+  <button class="ativo" onclick="abrirContrato(0)">01 Prestação de Serviço</button>
+  <button onclick="abrirContrato(1)">02 Serviço Autônomo</button>
+  <button onclick="abrirContrato(2)">03 Compra e Venda</button>
+  <button onclick="abrirContrato(3)">04 Parceria</button>
+  <button onclick="abrirContrato(4)">05 Freelance</button>
+  <button onclick="abrirContrato(5)">06 Honorários</button>
+  <button onclick="abrirContrato(6)">07 Fornecimento</button>
+  <button onclick="abrirContrato(7)">08 Sigilo (NDA)</button>
+  <button onclick="abrirContrato(8)">09 RPA</button>
+  <button onclick="abrirContrato(9)">10 Carta de Serviço</button>
+</div>
+
+<div class="acoes">
+  <button class="btn-imprimir" onclick="window.print()">🖨️ Imprimir Contrato Atual</button>
+  <button class="btn-limpar" onclick="limparCampos()">🗑️ Limpar Todos os Campos</button>
+</div>
+
+<div class="conteudo" id="conteudo">
+
+<!-- CONTRATO 1 -->
+<div class="contrato ativo" id="c0">
+  <div class="instrucao"><strong>✏️ Instrução:</strong> Preencha os campos destacados com seus dados e os dados do cliente. Leia cada cláusula antes de assinar.</div>
+  <h2>Contrato de Prestação de Serviço</h2>
+  <p class="subtitulo">Modelo geral — ideal para qualquer MEI que presta serviço para PJ ou PF</p>
+
+  <p><strong>Contratante:</strong> <input class="campo campo-grande" placeholder="Nome do contratante" value="_________________________">, CPF/CNPJ nº <input class="campo" placeholder="CPF/CNPJ" value="_________________________">, doravante denominado <strong>CONTRATANTE</strong>.</p>
+  <p><strong>Contratado:</strong> <input class="campo campo-grande" placeholder="Nome do contratado" value="_________________________">, CPF/CNPJ nº <input class="campo" placeholder="CPF/CNPJ" value="_________________________">, doravante denominado <strong>CONTRATADO</strong>.</p>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 1 — OBJETO</span>
+    <p>O CONTRATADO se obriga a prestar os seguintes serviços ao CONTRATANTE: <input class="campo campo-grande" placeholder="Descreva o serviço" value="__________________________________________________">, conforme detalhado neste instrumento.</p>
+  </div>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 2 — PRAZO E EXECUÇÃO</span>
+    <p>O serviço será executado no prazo de <input class="campo campo-menor" placeholder="dias" value="______"> dias úteis, contados a partir da data de assinatura. O local de execução será: <input class="campo campo-grande" placeholder="Local" value="__________________________________">.</p>
+  </div>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 3 — VALOR E PAGAMENTO</span>
+    <p>O valor total dos serviços é de R$ <input class="campo campo-menor" placeholder="Valor" value="__________">, a ser pago da seguinte forma: <input class="campo campo-grande" placeholder="Forma de pagamento" value="__________________________________">.</p>
+  </div>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 4 — OBRIGAÇÕES DAS PARTES</span>
+    <p>O CONTRATADO se compromete a executar o serviço com diligência e qualidade. O CONTRATANTE se compromete a fornecer as informações necessárias e efetuar o pagamento conforme acordado.</p>
+  </div>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 5 — RESCISÃO</span>
+    <p>Qualquer das partes poderá rescindir este contrato mediante aviso prévio de <input class="campo campo-menor" placeholder="dias" value="______"> dias. Em caso de rescisão sem justa causa, a parte prejudicada fará jus a multa de 50% do valor restante do contrato.</p>
+  </div>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 6 — FORO</span>
+    <p>Fica eleito o foro da comarca de <input class="campo campo-grande" placeholder="Cidade" value="_________________________"> para dirimir quaisquer dúvidas oriundas deste contrato.</p>
+  </div>
+
+  <p style="text-align:center;margin:24px 0 8px;font-size:13px;color:#888">Por estarem de acordo, as partes assinam o presente instrumento em 2 vias.</p>
+
+  <div class="assinatura">
+    <div>
+      <p>_________________________</p>
+      <div class="linha">CONTRATANTE</div>
+    </div>
+    <div>
+      <p>_________________________</p>
+      <div class="linha">CONTRATADO</div>
+    </div>
+  </div>
+  <p style="text-align:center;font-size:12px;color:#888;margin-top:16px"><input class="campo campo-grande" placeholder="Cidade" value="_________________________">, <input class="campo campo-menor" placeholder="dia" value="______"> de _________________________ de 2026.</p>
+</div>
+
+<!-- CONTRATO 2 -->
+<div class="contrato" id="c1">
+  <div class="instrucao"><strong>✏️ Instrução:</strong> Preencha os campos destacados com seus dados e os dados do cliente. Leia cada cláusula antes de assinar.</div>
+  <h2>Contrato de Prestação de Serviço Autônomo</h2>
+  <p class="subtitulo">Ideal para profissionais autônomos (diarista, eletricista, pintor, manicure)</p>
+
+  <p><strong>Contratante:</strong> <input class="campo campo-grande" placeholder="Nome" value="_________________________">, CPF nº <input class="campo" placeholder="CPF" value="_________________________">, <strong>Contratado:</strong> <input class="campo campo-grande" placeholder="Nome" value="_________________________">, CPF/CNPJ nº <input class="campo" placeholder="CPF/CNPJ" value="_________________________">.</p>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 1 — OBJETO</span>
+    <p>O CONTRATADO prestará serviços de <input class="campo campo-grande" placeholder="Tipo de serviço" value="__________________________________">, sem qualquer vínculo empregatício com o CONTRATANTE.</p>
+  </div>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 2 — SEM VÍNCULO EMPREGATÍCIO</span>
+    <p>Fica expressamente declarado que o serviço é prestado de forma autônoma, sem subordinação, horário fixo, exclusividade ou dependência, não configurando vínculo empregatício nos termos da CLT.</p>
+  </div>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 3 — VALOR</span>
+    <p>O valor do serviço é de R$ <input class="campo campo-menor" placeholder="Valor" value="__________">, a ser pago em até <input class="campo campo-menor" placeholder="dias" value="______"> dias após a conclusão.</p>
+  </div>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 4 — PRAZO</span>
+    <p>O serviço será concluído em até <input class="campo campo-menor" placeholder="dias" value="______"> dias. A cada <input class="campo campo-menor" placeholder="dias" value="______"> dias de atraso, incidirá multa de 2% sobre o valor total.</p>
+  </div>
+
+  <div class="assinatura">
+    <div><p>_________________________</p><div class="linha">CONTRATANTE</div></div>
+    <div><p>_________________________</p><div class="linha">CONTRATADO</div></div>
+  </div>
+  <p style="text-align:center;font-size:12px;color:#888;margin-top:16px"><input class="campo campo-grande" placeholder="Cidade" value="_________________________">, <input class="campo campo-menor" placeholder="dia" value="______"> de _________________________ de 2026.</p>
+</div>
+
+<!-- CONTRATO 3 -->
+<div class="contrato" id="c2">
+  <div class="instrucao"><strong>✏️ Instrução:</strong> Preencha os campos destacados com seus dados e os dados do cliente. Leia cada cláusula antes de assinar.</div>
+  <h2>Contrato de Compra e Venda</h2>
+  <p class="subtitulo">Ideal para comércio (roupas, artesanato, alimentos, acessórios)</p>
+
+  <p><strong>Vendedor:</strong> <input class="campo campo-grande" placeholder="Nome" value="_________________________">, CNPJ nº <input class="campo" placeholder="CNPJ" value="_________________________">.</p>
+  <p><strong>Comprador:</strong> <input class="campo campo-grande" placeholder="Nome" value="_________________________">, CPF/CNPJ nº <input class="campo" placeholder="CPF/CNPJ" value="_________________________">.</p>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 1 — OBJETO</span>
+    <p>O VENDEDOR se compromete a vender ao COMPRADOR os seguintes produtos: <input class="campo campo-grande" placeholder="Descreva os produtos" value="__________________________________________________">, na quantidade de <input class="campo campo-menor" placeholder="qtde" value="______"> unidades.</p>
+  </div>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 2 — VALOR</span>
+    <p>O valor total da venda é de R$ <input class="campo campo-menor" placeholder="Valor" value="__________">, a ser pago em <input class="campo campo-menor" placeholder="parcelas" value="______"> parcela(s), via <input class="campo" placeholder="Forma de pagamento" value="_________________________">.</p>
+  </div>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 3 — ENTREGA</span>
+    <p>O prazo para entrega é de <input class="campo campo-menor" placeholder="dias" value="______"> dias úteis, no endereço: <input class="campo campo-grande" placeholder="Endereço de entrega" value="__________________________________">.</p>
+  </div>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 4 — DEVOLUÇÃO</span>
+    <p>O COMPRADOR poderá solicitar devolução em até 7 dias após o recebimento, desde que o produto esteja em perfeito estado. O VENDEDOR reembolsará 100% do valor pago.</p>
+  </div>
+
+  <div class="assinatura">
+    <div><p>_________________________</p><div class="linha">VENDEDOR</div></div>
+    <div><p>_________________________</p><div class="linha">COMPRADOR</div></div>
+  </div>
+  <p style="text-align:center;font-size:12px;color:#888;margin-top:16px"><input class="campo campo-grande" placeholder="Cidade" value="_________________________">, <input class="campo campo-menor" placeholder="dia" value="______"> de _________________________ de 2026.</p>
+</div>
+
+<!-- CONTRATO 4 -->
+<div class="contrato" id="c3">
+  <div class="instrucao"><strong>✏️ Instrução:</strong> Preencha os campos destacados com seus dados e os dados do cliente. Leia cada cláusula antes de assinar.</div>
+  <h2>Contrato de Parceria / Colaboração</h2>
+  <p class="subtitulo">Ideal para dois MEIs que se unem para um projeto conjunto</p>
+
+  <p><strong>Parceiro 1:</strong> <input class="campo campo-grande" placeholder="Nome" value="_________________________">, CNPJ nº <input class="campo" placeholder="CNPJ" value="_________________________">.</p>
+  <p><strong>Parceiro 2:</strong> <input class="campo campo-grande" placeholder="Nome" value="_________________________">, CNPJ nº <input class="campo" placeholder="CNPJ" value="_________________________">.</p>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 1 — OBJETO</span>
+    <p>Os PARCEIROS firmam parceria para desenvolver o seguinte projeto: <input class="campo campo-grande" placeholder="Descreva o projeto" value="__________________________________________________">.</p>
+  </div>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 2 — DIVISÃO DE RECEITAS</span>
+    <p>As receitas geradas pelo projeto serão divididas da seguinte forma: <input class="campo campo-grande" placeholder="Ex: 50% cada" value="__________________________________">. As despesas serão rateadas proporcionalmente.</p>
+  </div>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 3 — RESPONSABILIDADES</span>
+    <p>Parceiro 1 é responsável por: <input class="campo campo-grande" placeholder="Responsabilidades" value="__________________________________">. Parceiro 2 é responsável por: <input class="campo campo-grande" placeholder="Responsabilidades" value="__________________________________">.</p>
+  </div>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 4 — PRAZO</span>
+    <p>A parceria terá duração de <input class="campo campo-menor" placeholder="meses" value="______"> meses, podendo ser renovada por acordo entre as partes.</p>
+  </div>
+
+  <div class="assinatura">
+    <div><p>_________________________</p><div class="linha">PARCEIRO 1</div></div>
+    <div><p>_________________________</p><div class="linha">PARCEIRO 2</div></div>
+  </div>
+  <p style="text-align:center;font-size:12px;color:#888;margin-top:16px"><input class="campo campo-grande" placeholder="Cidade" value="_________________________">, <input class="campo campo-menor" placeholder="dia" value="______"> de _________________________ de 2026.</p>
+</div>
+
+<!-- CONTRATO 5 -->
+<div class="contrato" id="c4">
+  <div class="instrucao"><strong>✏️ Instrução:</strong> Preencha os campos destacados com seus dados e os dados do cliente. Leia cada cláusula antes de assinar.</div>
+  <h2>Contrato de Freelance</h2>
+  <p class="subtitulo">Ideal para designers, devs, copywriters, fotógrafos</p>
+
+  <p><strong>Contratante:</strong> <input class="campo campo-grande" placeholder="Nome" value="_________________________">, CPF/CNPJ nº <input class="campo" placeholder="CPF/CNPJ" value="_________________________">.</p>
+  <p><strong>Freelancer:</strong> <input class="campo campo-grande" placeholder="Nome" value="_________________________">, CPF/CNPJ nº <input class="campo" placeholder="CPF/CNPJ" value="_________________________">.</p>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 1 — ESCOPO</span>
+    <p>O FREELANCER se compromete a entregar: <input class="campo campo-grande" placeholder="Descreva o escopo" value="__________________________________________________">.</p>
+  </div>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 2 — VALOR</span>
+    <p>O valor acordado é de R$ <input class="campo campo-menor" placeholder="Valor" value="__________">, sendo R$ <input class="campo campo-menor" placeholder="entrada" value="______"> de entrada e R$ <input class="campo campo-menor" placeholder="restante" value="______"> na entrega final.</p>
+  </div>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 3 — REVISÕES</span>
+    <p>Estão inclusas <input class="campo campo-menor" placeholder="nº" value="______"> rodadas de revisão. Revisões adicionais serão cobradas à parte no valor de R$ <input class="campo campo-menor" placeholder="valor" value="______"> cada.</p>
+  </div>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 4 — PRAZO</span>
+    <p>A entrega final ocorrerá em até <input class="campo campo-menor" placeholder="dias" value="______"> dias corridos a partir da assinatura.</p>
+  </div>
+
+  <div class="assinatura">
+    <div><p>_________________________</p><div class="linha">CONTRATANTE</div></div>
+    <div><p>_________________________</p><div class="linha">FREELANCER</div></div>
+  </div>
+  <p style="text-align:center;font-size:12px;color:#888;margin-top:16px"><input class="campo campo-grande" placeholder="Cidade" value="_________________________">, <input class="campo campo-menor" placeholder="dia" value="______"> de _________________________ de 2026.</p>
+</div>
+
+<!-- CONTRATO 6 -->
+<div class="contrato" id="c5">
+  <div class="instrucao"><strong>✏️ Instrução:</strong> Preencha os campos destacados com seus dados e os dados do cliente. Leia cada cláusula antes de assinar.</div>
+  <h2>Contrato de Honorários</h2>
+  <p class="subtitulo">Ideal para consultores, professores, palestrantes</p>
+
+  <p><strong>Contratante:</strong> <input class="campo campo-grande" placeholder="Nome" value="_________________________">, CPF/CNPJ nº <input class="campo" placeholder="CPF/CNPJ" value="_________________________">.</p>
+  <p><strong>Profissional:</strong> <input class="campo campo-grande" placeholder="Nome" value="_________________________">, CPF/CNPJ nº <input class="campo" placeholder="CPF/CNPJ" value="_________________________">.</p>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 1 — SERVIÇOS</span>
+    <p>O PROFISSIONAL prestará serviços de <input class="campo campo-grande" placeholder="Tipo de consultoria/serviço" value="__________________________________">, conforme cronograma acordado.</p>
+  </div>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 2 — HONORÁRIOS</span>
+    <p>Os honorários são de R$ <input class="campo campo-menor" placeholder="Valor" value="__________"> por <input class="campo" placeholder="hora/mês/projeto" value="_________________________">, totalizando R$ <input class="campo campo-menor" placeholder="Total" value="__________"> mensais.</p>
+  </div>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 3 — REAJUSTE</span>
+    <p>Os honorários serão reajustados anualmente com base no salário mínimo vigente ou índice acordado entre as partes.</p>
+  </div>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 4 — RESCISÃO</span>
+    <p>O contrato pode ser rescindido com aviso prévio de 30 dias. Serviços já prestados serão pagos proporcionalmente.</p>
+  </div>
+
+  <div class="assinatura">
+    <div><p>_________________________</p><div class="linha">CONTRATANTE</div></div>
+    <div><p>_________________________</p><div class="linha">PROFISSIONAL</div></div>
+  </div>
+  <p style="text-align:center;font-size:12px;color:#888;margin-top:16px"><input class="campo campo-grande" placeholder="Cidade" value="_________________________">, <input class="campo campo-menor" placeholder="dia" value="______"> de _________________________ de 2026.</p>
+</div>
+
+<!-- CONTRATO 7 -->
+<div class="contrato" id="c6">
+  <div class="instrucao"><strong>✏️ Instrução:</strong> Preencha os campos destacados com seus dados e os dados do cliente. Leia cada cláusula antes de assinar.</div>
+  <h2>Contrato de Fornecimento de Produtos</h2>
+  <p class="subtitulo">Ideal para MEI que fornece produtos regularmente para empresas</p>
+
+  <p><strong>Fornecedor:</strong> <input class="campo campo-grande" placeholder="Nome" value="_________________________">, CNPJ nº <input class="campo" placeholder="CNPJ" value="_________________________">.</p>
+  <p><strong>Comprador:</strong> <input class="campo campo-grande" placeholder="Nome" value="_________________________">, CNPJ nº <input class="campo" placeholder="CNPJ" value="_________________________">.</p>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 1 — OBJETO</span>
+    <p>O FORNECEDOR se compromete a fornecer ao COMPRADOR os produtos: <input class="campo campo-grande" placeholder="Descreva os produtos" value="__________________________________________________">, conforme demanda mensal estimada de <input class="campo campo-menor" placeholder="qtde" value="______"> unidades.</p>
+  </div>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 2 — VALOR</span>
+    <p>O valor unitário de cada produto é R$ <input class="campo campo-menor" placeholder="Valor unit." value="__________">. O valor total de cada fornecimento será faturado mensalmente.</p>
+  </div>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 3 — PRAZO DE ENTREGA</span>
+    <p>A entrega ocorrerá em até <input class="campo campo-menor" placeholder="dias" value="______"> dias úteis após o pedido. O atraso na entrega gerará multa de 2% sobre o valor do pedido.</p>
+  </div>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 4 — PAGAMENTO</span>
+    <p>O pagamento será feito em <input class="campo campo-menor" placeholder="dias" value="______"> dias após a entrega, via <input class="campo" placeholder="Forma de pagamento" value="_________________________">.</p>
+  </div>
+
+  <div class="assinatura">
+    <div><p>_________________________</p><div class="linha">FORNECEDOR</div></div>
+    <div><p>_________________________</p><div class="linha">COMPRADOR</div></div>
+  </div>
+  <p style="text-align:center;font-size:12px;color:#888;margin-top:16px"><input class="campo campo-grande" placeholder="Cidade" value="_________________________">, <input class="campo campo-menor" placeholder="dia" value="______"> de _________________________ de 2026.</p>
+</div>
+
+<!-- CONTRATO 8 -->
+<div class="contrato" id="c7">
+  <div class="instrucao"><strong>✏️ Instrução:</strong> Preencha os campos destacados com seus dados e os dados do cliente. Leia cada cláusula antes de assinar.</div>
+  <h2>Acordo de Sigilo (NDA Simplificado)</h2>
+  <p class="subtitulo">Ideal para proteger ideias, processos ou dados de clientes</p>
+
+  <p><strong>Parte 1 (Reveladora):</strong> <input class="campo campo-grande" placeholder="Nome" value="_________________________">, CNPJ nº <input class="campo" placeholder="CNPJ" value="_________________________">.</p>
+  <p><strong>Parte 2 (Receptora):</strong> <input class="campo campo-grande" placeholder="Nome" value="_________________________">, CPF/CNPJ nº <input class="campo" placeholder="CPF/CNPJ" value="_________________________">.</p>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 1 — INFORMAÇÃO CONFIDENCIAL</span>
+    <p>Considera-se informação confidencial todo dado, documento, estratégia, segredo comercial, lista de clientes, processo ou tecnologia compartilhado entre as partes durante a relação comercial.</p>
+  </div>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 2 — OBRIGAÇÃO DE SIGILO</span>
+    <p>A PARTE RECEPTORA se compromete a não divulgar, copiar, reproduzir ou utilizar as informações confidenciais para qualquer fim que não seja o objeto da relação entre as partes.</p>
+  </div>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 3 — PRAZO</span>
+    <p>A obrigação de sigilo permanece válida por <input class="campo campo-menor" placeholder="anos" value="______"> anos após o término da relação entre as partes.</p>
+  </div>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 4 — VIOLAÇÃO</span>
+    <p>Em caso de violação do sigilo, a parte infratora pagará multa de R$ <input class="campo campo-menor" placeholder="Valor" value="__________">, sem prejuízo de indenização por perdas e danos.</p>
+  </div>
+
+  <div class="assinatura">
+    <div><p>_________________________</p><div class="linha">PARTE REVELADORA</div></div>
+    <div><p>_________________________</p><div class="linha">PARTE RECEPTORA</div></div>
+  </div>
+  <p style="text-align:center;font-size:12px;color:#888;margin-top:16px"><input class="campo campo-grande" placeholder="Cidade" value="_________________________">, <input class="campo campo-menor" placeholder="dia" value="______"> de _________________________ de 2026.</p>
+</div>
+
+<!-- CONTRATO 9 -->
+<div class="contrato" id="c8">
+  <div class="instrucao"><strong>✏️ Instrução:</strong> Preencha os campos destacados com seus dados e os dados do cliente. Leia cada cláusula antes de assinar.</div>
+  <h2>Recibo de Pagamento Autônomo (RPA)</h2>
+  <p class="subtitulo">Ideal para MEI que recebe ou emite RPA</p>
+
+  <p><strong>Prestador:</strong> <input class="campo campo-grande" placeholder="Nome" value="_________________________">, CPF/CNPJ nº <input class="campo" placeholder="CPF/CNPJ" value="_________________________">.</p>
+  <p><strong>Tomador:</strong> <input class="campo campo-grande" placeholder="Nome" value="_________________________">, CPF/CNPJ nº <input class="campo" placeholder="CPF/CNPJ" value="_________________________">.</p>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 1 — SERVIÇO PRESTADO</span>
+    <p>O PRESTADOR declara ter prestado ao TOMADOR os serviços de <input class="campo campo-grande" placeholder="Descreva o serviço" value="__________________________________________________">, no valor de R$ <input class="campo campo-menor" placeholder="Valor bruto" value="__________">.</p>
+  </div>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 2 — VALORES</span>
+    <p>Valor bruto: R$ <input class="campo campo-menor" placeholder="bruto" value="__________">
+    <br>Desconto INSS (11%): R$ <input class="campo campo-menor" placeholder="INSS" value="__________">
+    <br>Desconto IRRF (se aplicável): R$ <input class="campo campo-menor" placeholder="IRRF" value="__________">
+    <br><strong>Valor líquido a receber: R$ <input class="campo campo-menor" placeholder="Líquido" value="__________"></strong></p>
+  </div>
+
+  <div class="clausula">
+    <span class="num">CLÁUSULA 3 — DECLARAÇÃO</span>
+    <p>O PRESTADOR declara que os serviços foram efetivamente prestados e que assume total responsabilidade pelas informações prestadas.</p>
+  </div>
+
+  <div class="assinatura">
+    <div><p>_________________________</p><div class="linha">PRESTADOR</div></div>
+    <div><p>_________________________</p><div class="linha">TOMADOR</div></div>
+  </div>
+  <p style="text-align:center;font-size:12px;color:#888;margin-top:16px"><input class="campo campo-grande" placeholder="Cidade" value="_________________________">, <input class="campo campo-menor" placeholder="dia" value="______"> de _________________________ de 2026.</p>
+</div>
+
+<!-- CONTRATO 10 -->
+<div class="contrato" id="c9">
+  <div class="instrucao"><strong>✏️ Instrução:</strong> Preencha os campos destacados com seus dados e os dados do cliente. Leia cada cláusula antes de assinar.</div>
+  <h2>Carta de Prestação de Serviço (Simplificada)</h2>
+  <p class="subtitulo">Ideal para serviços rápidos e informais (bico, freela pequeno)</p>
+
+  <p style="font-size:14px;margin-bottom:12px">Eu, <input class="campo campo-grande" placeholder="Seu nome" value="_________________________">, CPF/CNPJ nº <input class="campo" placeholder="CPF/CNPJ" value="_________________________">, declaro que prestei serviços de <input class="campo campo-grande" placeholder="Tipo de serviço" value="__________________________________________________"> para <input class="campo campo-grande" placeholder="Nome do cliente" value="_________________________">, CPF/CNPJ nº <input class="campo" placeholder="CPF/CNPJ do cliente" value="_________________________">.</p>
+
+  <div class="clausula">
+    <span class="num">INFORMAÇÕES DO SERVIÇO</span>
+    <p><strong>Descrição detalhada:</strong> <input class="campo campo-grande" placeholder="Descreva detalhadamente" value="__________________________________________________"></p>
+    <p><strong>Valor cobrado:</strong> R$ <input class="campo campo-menor" placeholder="Valor" value="__________"></p>
+    <p><strong>Data de realização:</strong> <input class="campo campo-menor" placeholder="dia" value="______"> / <input class="campo campo-menor" placeholder="mês" value="______"> / 2026</p>
+    <p><strong>Forma de pagamento:</strong> <input class="campo" placeholder="PIX/dinheiro/cartão" value="_________________________"></p>
+  </div>
+
+  <p style="font-size:14px;margin:16px 0">Declaro, ainda, que o serviço foi executado com qualidade e dentro do prazo combinado, não havendo pendências entre as partes.</p>
+
+  <div class="assinatura">
+    <div><p>_________________________</p><div class="linha">PRESTADOR DO SERVIÇO</div></div>
+    <div><p>_________________________</p><div class="linha">CLIENTE</div></div>
+  </div>
+  <p style="text-align:center;font-size:12px;color:#888;margin-top:16px"><input class="campo campo-grande" placeholder="Cidade" value="_________________________">, <input class="campo campo-menor" placeholder="dia" value="______"> de _________________________ de 2026.</p>
+</div>
+
+</div>
+
+<script>
+function abrirContrato(idx){
+  document.querySelectorAll('.contrato').forEach(function(el,i){el.classList.toggle('ativo',i===idx)});
+  document.querySelectorAll('#navContratos button').forEach(function(el,i){el.classList.toggle('ativo',i===idx)});
+}
+function limparCampos(){
+  if(!confirm('Limpar todos os campos preenchidos?'))return;
+  document.querySelectorAll('.campo').forEach(function(el){el.value='_________________________';});
+}
+</script>
+</body>
+</html>
