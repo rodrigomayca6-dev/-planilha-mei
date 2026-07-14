@@ -2,8 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script>
+<script>
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -15,6 +14,7 @@ s.parentNode.insertBefore(t,s)}(window, document,'script',
 fbq('init', '1262807002454711');
 fbq('track', 'PageView');
 </script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Planilha MEI Definitiva — O MEI Descomplicado</title>
 <meta name="description" content="Controle financeiro completo para MEI: receitas, despesas, DAS, limite de faturamento e declaração DASN. Tudo que você precisa em um só lugar.">
 <style>
@@ -31,7 +31,6 @@ body{font-family:'Inter','Segoe UI',system-ui,sans-serif;background:#fff;color:#
 .hero h1 span{background:linear-gradient(135deg,#4fc3f7,#29b6f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hero .sub{font-size:clamp(16px,2.2vw,22px);opacity:.85;max-width:650px;margin:0 auto 8px;font-weight:400}
 .hero .sub2{font-size:14px;opacity:.6;margin-bottom:28px}
-
 .hero .price-area{margin-bottom:6px}
 .hero .price-old{color:#ef5350;font-weight:800;position:relative;display:inline-block;margin-right:8px}
 .hero .price-old .x1{position:absolute;top:50%;left:-8%;right:-8%;height:3px;background:#ef5350;transform:rotate(-10deg)}
@@ -180,7 +179,6 @@ footer{text-align:center;padding:32px 24px;font-size:12px;color:#bbb}
   <h1>Planilha <span>MEI Definitiva</span></h1>
   <p class="sub">O MEI Descomplicado — Finalmente uma planilha que você entende</p>
   <p class="sub2">Sem Excel. Sem complicação. Abre no navegador e pronto.</p>
-  
   <div class="price-area">
     <span style="font-size:18px;color:#fff;font-weight:600;vertical-align:middle;margin-right:3px">DE</span>
     <span class="price-old" style="font-size:40px;vertical-align:middle">R$ 197<div class="x1"></div><div class="x2"></div></span>
@@ -428,7 +426,6 @@ footer{text-align:center;padding:32px 24px;font-size:12px;color:#bbb}
       </div>
       <div class="w-label">MEI — Salão de Beleza, SP</div>
     </div>
-
     <div class="whats-card">
       <div class="w-top">
         <div class="w-avatar"><img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Carla L."></div>
@@ -451,7 +448,6 @@ footer{text-align:center;padding:32px 24px;font-size:12px;color:#bbb}
       </div>
       <div class="w-label">MEI — Artesanato, MG</div>
     </div>
-
     <div class="whats-card">
       <div class="w-top">
         <div class="w-avatar"><img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Rafael P."></div>
@@ -474,7 +470,6 @@ footer{text-align:center;padding:32px 24px;font-size:12px;color:#bbb}
       </div>
       <div class="w-label">MEI — Serviços de TI, RJ</div>
     </div>
-
     <div class="whats-card">
       <div class="w-top">
         <div class="w-avatar"><img src="https://randomuser.me/api/portraits/women/55.jpg" alt="Juliana S."></div>
@@ -497,7 +492,6 @@ footer{text-align:center;padding:32px 24px;font-size:12px;color:#bbb}
       </div>
       <div class="w-label">MEI — Consultoria, RS</div>
     </div>
-
     <div class="whats-card">
       <div class="w-top">
         <div class="w-avatar"><img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Carlos M."></div>
@@ -520,7 +514,6 @@ footer{text-align:center;padding:32px 24px;font-size:12px;color:#bbb}
       </div>
       <div class="w-label">MEI — Oficina Mecânica, SP</div>
     </div>
-
     <div class="whats-card">
       <div class="w-top">
         <div class="w-avatar"><img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Fernando L."></div>
@@ -630,7 +623,6 @@ footer{text-align:center;padding:32px 24px;font-size:12px;color:#bbb}
 document.querySelectorAll('.faq-item .q').forEach(function(q){
   q.addEventListener('click',function(){this.parentElement.classList.toggle('open');});
 });
-
 // Timer 8h
 (function(){
   var end = new Date().getTime() + 8*60*60*1000;
@@ -643,7 +635,6 @@ document.querySelectorAll('.faq-item .q').forEach(function(q){
   }
   tick();setInterval(tick,1000);
 })();
-
 // Sticky bar
 window.addEventListener('scroll',function(){
   var bar=document.getElementById('stickyBar');
