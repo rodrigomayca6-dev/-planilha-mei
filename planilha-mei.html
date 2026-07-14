@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planilha MEI Completa — Controle Financeiro Inteligente</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js">
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter','Segoe UI',system-ui,sans-serif;background:#f0f2f5;color:#1a1a2e}
+.top-bar{background:linear-gradient(135deg,#0a1628,#16213e,#1a1a5e);color:#fff;padding:16px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.top-bar h1{font-size:22px;font-weight:800;letter-spacing:-.5px}
+.top-bar h1 span{color:#4fc3f7}
+.top-bar .sub{font-size:12px;opacity:.6;margin-top:1px}
+.top-actions{display:flex;gap:8px;flex-wrap:wrap}
+.stats-row{background:#fff;border-bottom:1px solid #e8e8e8;padding:14px 28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.stat-c{text-align:center;padding:4px 0}
+.stat-c .l{font-size:10px;text-transform:uppercase;color:#888;letter-spacing:.6px;font-weight:600}
+.stat-c .v{font-size:20px;font-weight:800;margin:2px 0;font-variant-numeric:tabular-nums}
+.stat-c .s{font-size:11px;color:#aaa}
+.stat-c .v.gr{color:#2e7d32}.stat-c .v.rd{color:#c62828}.stat-c .v.bl{color:#0f3460}.stat-c .v.or{color:#e65100}
+.prog{height:5px;background:#e8e8e8;border-radius:3px;margin:4px 16px 0;overflow:hidden}
+.prog-f{height:100%;border-radius:3px;transition:width .5s}
+.nav{background:#fff;display:flex;border-bottom:1px solid #e0e0e0;padding:0 20px;overflow-x:auto}
+.nav button{padding:14px 18px;border:none;background:none;font-size:12px;font-weight:600;color:#777;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:.15s}
+.nav button:hover{color:#0f3460;background:#f5f7fa}
+.nav button.act{color:#0f3460;border-bottom-color:#0f3460;background:#f0f4ff}
+.cont{padding:20px 28px;max-width:1200px;margin:0 auto}
+.tab{display:none}
+.tab.act{display:block}
+.card{background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);padding:20px 24px;margin-bottom:16px}
+.card h2{font-size:15px;font-weight:700;margin-bottom:14px;color:#1a1a2e;display:flex;align-items:center;gap:8px}
+.card h2 .badge{font-size:10px;background:#e8f0fe;color:#0f3460;padding:2px 8px;border-radius:10px;font-weight:500}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:750px){.grid-2{grid-template-columns:1fr}}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:#f5f7fa;text-align:left;padding:9px 10px;font-size:10px;text-transform:uppercase;color:#777;letter-spacing:.5px;border-bottom:2px solid #e0e0e0;font-weight:600}
+td{padding:8px 10px;border-bottom:1px solid #f0f0f0;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafbfc}
+input,select,textarea{font-family:inherit;font-size:13px;padding:7px 10px;border:1px solid #d0d0d0;border-radius:7px;width:100%;outline:none;transition:border .15s,box-shadow .15s}
+input:focus,select:focus,textarea:focus{border-color:#0f3460;box-shadow:0 0 0 3px rgba(15,52,96,.12)}
+textarea{resize:vertical;min-height:50px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;transition:.15s;text-decoration:none}
+.btn-p{background:#0f3460;color:#fff}
+.btn-p:hover{background:#1a4a7a}
+.btn-s{background:#2e7d32;color:#fff}
+.btn-s:hover{background:#1b5e20}
+.btn-d{background:#c62828;color:#fff}
+.btn-d:hover{background:#b71c1c}
+.btn-o{background:transparent;border:1px solid #d0d0d0;color:#666}
+.btn-o:hover{background:#f5f5f5;border-color:#aaa}
+.btn-sm{padding:5px 10px;font-size:11px}
+.tb{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
+.tb .sp{flex:1}
+.ff{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:12px;align-items:end}
+.ff .fl label{display:block;font-size:10px;font-weight:600;color:#888;margin-bottom:3px;text-transform:uppercase;letter-spacing:.4px}
+.tot td{font-weight:700;background:#f5f7fa;border-top:2px solid #0f3460;font-size:13px}
+.emp{text-align:center;padding:40px 20px;color:#bbb}
+.emp p{font-size:14px;margin-top:6px}
+.g{color:#2e7d32}.r{color:#c62828}.b{color:#0f3460}.o{color:#e65100}
+.badge-st{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
+.badge-st.a{background:#e8f5e9;color:#2e7d32}
+.badge-st.b{background:#fff8e1;color:#e65100}
+.badge-st.c{background:#fbe9e7;color:#c62828}
+.badge-st.d{background:#e3f2fd;color:#0f3460}
+.das-box{background:linear-gradient(135deg,#0a1628,#16213e);color:#fff;border-radius:12px;padding:28px;text-align:center}
+.das-box .bg{font-size:42px;font-weight:800;letter-spacing:-1px}
+.das-box .sm{font-size:14px;opacity:.7;margin-top:6px}
+.das-box .sub{font-size:12px;opacity:.5;margin-top:12px}
+.dash-card{background:#fff;border-radius:10px;padding:18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.dash-card .n{font-size:24px;font-weight:800}
+.dash-card .l{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-top:2px}
+.dash-card .c{font-size:11px;color:#aaa;margin-top:4px}
+.proj-box{background:linear-gradient(135deg,#fff8e1,#fff3e0);border-radius:10px;padding:20px;text-align:center;border:1px solid #ffe0b2}
+.proj-box .d{font-size:28px;font-weight:800;color:#c62828}
+.proj-box .n{font-size:12px;color:#888;margin-top:6px}
+.footer{text-align:center;padding:20px;font-size:11px;color:#bbb}
+.tag{display:inline-block;background:#e8f0fe;color:#0f3460;padding:1px 7px;border-radius:4px;font-size:10px;font-weight:600}
+.destaque{background:#fffde7;padding:12px 16px;border-radius:8px;border-left:3px solid #f9a825;font-size:13px;margin-bottom:12px}
+.destaque strong{color:#0f3460}
+.modal-bg{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:999}
+.modal{background:#fff;border-radius:14px;padding:28px;max-width:520px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.2);max-height:90vh;overflow-y:auto}
+.modal h2{font-size:17px;margin-bottom:16px}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+.alert{border-radius:8px;padding:12px 16px;margin-bottom:12px;font-size:13px;display:flex;align-items:center;gap:8px}
+.alert-green{background:#e8f5e9;color:#1b5e20;border-left:3px solid #2e7d32}
+.alert-yellow{background:#fff8e1;color:#e65100;border-left:3px solid #f9a825}
+.alert-red{background:#fbe9e7;color:#b71c1c;border-left:3px solid #c62828}
+.alert-blue{background:#e3f2fd;color:#0f3460;border-left:3px solid #1565c0}
+.dasn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px}
+.dasn-val{text-align:center;padding:16px;background:#f5f7fa;border-radius:8px}
+.dasn-val .vl{font-size:28px;font-weight:800}
+.dasn-val .lb{font-size:11px;color:#888;text-transform:uppercase;margin-top:2px}
+.aumento{color:#c62828;font-weight:700}
+@media print{body{background:#fff}.top-bar,.top-actions,.nav,.tb,.btn,.no-print{display:none!important}.tab{display:block!important}.card{box-shadow:none;border:1px solid #ddd;break-inside:avoid;page-break-inside:avoid}.cont{padding:10px}.stats-row{display:grid!important;border:none;padding:10px 0}}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div>
+    <h1>Planilha <span>MEI</span></h1>
+    <div class="sub">Controle financeiro completo — Valores atualizados para 2026</div>
+  </div>
+  <div class="top-actions">
+    <button class="btn btn-o" style="color:#fff;border-color:rgba(255,255,255,.25)" onclick="exportarCSV()">CSV</button>
+    <button class="btn btn-o" style="color:#fff;border-color:rgba(255,255,255,.25)" onclick="window.print()">Imprimir</button>
+    <button class="btn btn-o" style="color:#fff;border-color:rgba(255,255,255,.25)" onclick="abrirConfig()">Config</button>
+  </div>
+</div>
+
+<div class="stats-row" id="statsRow"></div>
+
+<div class="nav" id="navTab">
+  <button class="act" data-t="dashboard">Dashboard</button>
+  <button data-t="financeiro">Financeiro</button>
+  <button data-t="das">DAS Mensal</button>
+  <button data-t="anual">Controle Anual</button>
+  <button data-t="cliente">Clientes</button>
+  <button data-t="nf">Notas Fiscais</button>
+  <button data-t="fluxo">Fluxo de Caixa</button>
+  <button data-t="dasn">DASN-SIMEI</button>
+  <button data-t="relatorio">Relatórios</button>
+</div>
+
+<div class="cont">
+
+<!-- DASHBOARD -->
+<div class="tab act" id="t-dashboard">
+  <div class="card">
+    <h2>Configuração do negócio</h2>
+    <div class="ff">
+      <div class="fl"><label>Nome da empresa</label><input id="cfgNome" placeholder="Minha Empresa MEI" onchange="cfgSalvar()"></div>
+      <div class="fl"><label>Meta mensal (R$)</label><input id="cfgMeta" type="number" placeholder="5000" onchange="cfgSalvar()"></div>
+      <div class="fl"><label>Tipo de atividade</label>
+        <select id="cfgTipo" onchange="cfgSalvar()">
+          <option value="comercio">Comércio/Indústria</option>
+          <option value="servico">Serviço</option>
+          <option value="ambos">Comércio + Serviço</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div id="dashboardAlertas"></div>
+  <div class="grid-2">
+    <div class="card"><h2>Receita vs Despesa <span class="tag">6 meses</span></h2><canvas id="chLinha" height="200"></canvas></div>
+    <div class="card"><h2>Despesas por Categoria <span class="tag">ano</span></h2><canvas id="chPizza" height="200"></canvas></div>
+  </div>
+</div>
+
+<!-- FINANCEIRO -->
+<div class="tab" id="t-financeiro">
+  <div class="card">
+    <div class="tb">
+      <button class="btn btn-s btn-sm" onclick="finAdicionar()">+ Novo</button>
+      <span class="sp"></span>
+      <strong id="finTotal" style="font-size:13px">Saldo: R$ 0,00</strong>
+    </div>
+    <div style="overflow-x:auto">
+      <table><thead><tr>
+        <th style="width:100px">Data</th>
+        <th style="width:70px">Tipo</th>
+        <th>Descrição</th>
+        <th style="width:140px">Categoria</th>
+        <th style="width:110px">Valor</th>
+        <th style="width:110px">Status</th>
+        <th style="width:30px"></th>
+      </tr></thead>
+      <tbody id="finTbody"></tbody></table>
+    </div>
+  </div>
+</div>
+
+<!-- DAS -->
+<div class="tab" id="t-das">
+  <div class="destaque">
+    <strong>Importante:</strong> O MEI paga um <strong>valor FIXO</strong> por mês (não porcentagem). Em 2026, com salário mínimo de R$ 1.621,00, os valores são:
+    Comércio <strong>R$ 82,05</strong> | Serviço <strong>R$ 86,05</strong> | Misto <strong>R$ 87,05</strong>.
+    O DAS não muda conforme seu faturamento, desde que você não ultrapasse o limite anual de R$ 81.000,00.
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <h2>Seu DAS Mensal</h2>
+      <div class="grid-3" id="dasCards"></div>
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid #eee">
+        <div class="ff">
+          <div class="fl"><label>Valor personalizado (R$)</label><input id="dasPersonalizado" type="number" step="0.01" placeholder="0 = usar padrão" onchange="dasRender()"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Histórico de Pagamento</h2>
+      <p style="font-size:12px;color:#888;margin-bottom:10px">Marque os meses que você já pagou o DAS.</p>
+      <div style="overflow-x:auto">
+        <table><thead><tr><th>Mês/Ano</th><th>Valor DAS</th><th>Situação</th><th></th></tr></thead>
+        <tbody id="dasTbody"></tbody></table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ANUAL -->
+<div class="tab" id="t-anual">
+  <div class="card">
+    <h2>Resumo Mensal <span class="tag">ano atual</span></h2>
+    <div style="overflow-x:auto">
+      <table><thead><tr>
+        <th>Mês</th><th>Receitas</th><th>Despesas</th><th>Saldo</th><th>Acumulado</th><th>% Limite</th><th>DAS</th><th>Status</th>
+      </tr></thead>
+      <tbody id="anualTbody"></tbody></table>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Projeção de Estouro do Teto</h2>
+    <div style="margin-bottom:12px;font-size:13px;color:#555">
+      Limite anual: <strong>R$ 81.000,00</strong> |
+      Excedeu até 20% (R$ 97.200)? Desenquadramento no ano seguinte.<br>
+      Excedeu mais de 20%? Desenquadramento retroativo.
+    </div>
+    <div class="proj-box" id="projBox">
+      <div class="d">---</div>
+      <div class="n">Com base na média dos últimos meses</div>
+    </div>
+  </div>
+</div>
+
+<!-- CLIENTES -->
+<div class="tab" id="t-cliente">
+  <div class="card">
+    <div class="tb">
+      <button class="btn btn-s btn-sm" onclick="cliAdicionar()">+ Novo cliente</button>
+    </div>
+    <div style="overflow-x:auto">
+      <table><thead><tr>
+        <th>Nome</th><th>Contato</th><th>CPF/CNPJ</th><th>Total em notas</th><th></th>
+      </tr></thead>
+      <tbody id="cliTbody"></tbody></table>
+    </div>
+  </div>
+</div>
+
+<!-- NOTAS FISCAIS -->
+<div class="tab" id="t-nf">
+  <div class="card">
+    <div class="tb">
+      <button class="btn btn-s btn-sm" onclick="nfAdicionar()">+ Nova nota</button>
+    </div>
+    <div style="overflow-x:auto">
+      <table><thead><tr>
+        <th>Nº</th><th>Cliente</th><th>Data</th><th>Serviço/Produto</th><th>Valor</th><th>Status</th><th></th>
+      </tr></thead>
+      <tbody id="nfTbody"></tbody></table>
+    </div>
+  </div>
+</div>
+
+<!-- FLUXO DE CAIXA -->
+<div class="tab" id="t-fluxo">
+  <div class="card">
+    <h2>Projeção de Fluxo de Caixa <span class="tag">próximos 3 meses</span></h2>
+    <div class="destaque">Baseado na média dos últimos 3 meses de receitas e despesas. Use como referência.</div>
+    <div style="overflow-x:auto">
+      <table><thead><tr>
+        <th>Mês</th><th>Receita estimada</th><th>Despesa estimada</th><th>DAS</th><th>Saldo projetado</th><th>Saldo acumulado</th>
+      </tr></thead>
+      <tbody id="fluxoTbody"></tbody></table>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Indicadores</h2>
+    <div class="grid-3" id="fluxoInd"></div>
+  </div>
+</div>
+
+<!-- DASN-SIMEI -->
+<div class="tab" id="t-dasn">
+  <div class="destaque">
+    <strong>Declaração Anual DASN-SIMEI</strong> — Todo MEI deve entregar até <strong>31 de maio</strong> de cada ano,
+    informando o faturamento do ano anterior. Mesmo sem movimento, a declaração é obrigatória.
+  </div>
+  <div class="card">
+    <h2>Dados para Declaração Anual</h2>
+    <div id="dasnConteudo"></div>
+  </div>
+</div>
+
+<!-- RELATÓRIOS -->
+<div class="tab" id="t-relatorio">
+  <div class="card">
+    <div class="tb no-print">
+      <button class="btn btn-p btn-sm" onclick="window.print()">Imprimir relatório</button>
+      <button class="btn btn-o btn-sm" onclick="exportarCSV()">Exportar CSV</button>
+    </div>
+  </div>
+  <div class="card" id="relContent">
+    <h2>Extrato Contábil</h2>
+    <p style="font-size:12px;color:#888;margin-bottom:12px">Relatório completo para contador. Período: ano atual.</p>
+    <div id="extratoHtml"></div>
+  </div>
+  <div class="card" id="relResumo">
+    <h2>Resumo Financeiro</h2>
+    <div id="resumoHtml"></div>
+  </div>
+</div>
+
+</div>
+
+<div class="footer">Planilha MEI Completa 2026 — v2.0 — Dados salvos automaticamente no navegador</div>
+
+<div id="modal" class="modal-bg" style="display:none" onclick="if(event.target===this)fecharModal()">
+  <div class="modal">
+    <h2 id="modalTitle">Configurações</h2>
+    <div id="modalBody"></div>
+    <div class="modal-actions">
+      <button class="btn btn-o btn-sm" onclick="fecharModal()">Cancelar</button>
+      <button class="btn btn-p btn-sm" id="modalOk" onclick="fecharModal()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ==================== DADOS ====================
+var D = carregar();
+
+function dadosPadrao() {
+  var a = new Date().getFullYear();
+  var m = new Date().getMonth();
+  function d(dd) { return a+'-'+String(m+1).padStart(2,'0')+'-'+String(dd).padStart(2,'0'); }
+  function d2(dd, mm) {
+    var y = a;
+    if (mm < 0) { mm += 12; y -= 1; }
+    return y+'-'+String(mm+1).padStart(2,'0')+'-'+String(dd).padStart(2,'0');
+  }
+  return {
+    config: {
+      empresa: 'Minha Empresa MEI',
+      metaMensal: 5000,
+      tipoAtividade: 'servico',
+      dasServico: 86.05,
+      dasComercio: 82.05,
+      dasAmbos: 87.05,
+      limiteAnual: 81000,
+      dasPersonalizado: 0
+    },
+    registros: [
+      {id:1,data:d2(2,m-1),tipo:'receita',descricao:'Venda produtos - Cliente A',categoria:'Venda de Produtos',atividade:'comercio',valor:3200,status:'recebido',forma:'PIX'},
+      {id:2,data:d2(5,m-1),tipo:'receita',descricao:'Serviço prestado - Cliente B',categoria:'Prestação de Serviços',atividade:'servico',valor:1800,status:'recebido',forma:'Transferência'},
+      {id:3,data:d2(3,m-1),tipo:'despesa',descricao:'Material de escritório',categoria:'Material Escritório',valor:230,status:'pago',forma:'PIX'},
+      {id:4,data:d2(7,m-1),tipo:'despesa',descricao:'Anúncios Instagram',categoria:'Marketing',valor:350,status:'pago',forma:'Cartão'},
+      {id:5,data:d2(10,m-1),tipo:'despesa',descricao:'Combustível',categoria:'Transporte',valor:120,status:'pago',forma:'PIX'},
+      {id:6,data:d(2),tipo:'receita',descricao:'Venda online - Cliente C',categoria:'Venda de Produtos',atividade:'comercio',valor:1500,status:'recebido',forma:'PIX'},
+      {id:7,data:d(5),tipo:'receita',descricao:'Consultoria - Cliente D',categoria:'Prestação de Serviços',atividade:'servico',valor:2800,status:'pendente',forma:'Boleto'},
+      {id:8,data:d(8),tipo:'despesa',descricao:'Alimentação',categoria:'Alimentação',valor:180,status:'pago',forma:'Cartão'},
+      {id:9,data:d(12),tipo:'despesa',descricao:'Internet',categoria:'Utilidades',valor:109,status:'pago',forma:'Débito'},
+      {id:10,data:d(14),tipo:'receita',descricao:'Projeto - Cliente E',categoria:'Prestação de Serviços',atividade:'servico',valor:4200,status:'pendente',forma:'PIX'}
+    ],
+    dasHistorico: [],
+    clientes: [
+      {id:1,nome:'Cliente A',contato:'(11) 99999-0001',cnpj:'123.456.789-01',obs:''},
+      {id:2,nome:'Cliente B',contato:'(11) 99999-0002',cnpj:'987.654.321-01',obs:''}
+    ],
+    notasFiscais: [
+      {id:1,numero:'NF-001',cliente:'Cliente A',data:d2(2,m-1),servico:'Venda de produtos',valor:3200,status:'emitida'},
+      {id:2,numero:'NF-002',cliente:'Cliente B',data:d2(5,m-1),servico:'Consultoria',valor:1800,status:'emitida'}
+    ],
+    nextId:11,nextCliId:3,nextNfId:3
+  };
+}
+
+function carregar() {
+  try {
+    var raw = localStorage.getItem('planilha_mei_v2');
+    if (raw) { var d = JSON.parse(raw); if (d && d.config) return d; }
+  } catch(e) {}
+  return dadosPadrao();
+}
+
+function salvar() {
+  try { localStorage.setItem('planilha_mei_v2', JSON.stringify(D)); } catch(e) {}
+}
+
+// ==================== HELPERS ====================
+function soma(arr) { return arr.reduce(function(s,r){return s+r.valor;},0); }
+function filtra(t,m,a) {
+  return D.registros.filter(function(r){return r.tipo===t && r.data.substring(0,7)===a+'-'+String(m+1).padStart(2,'0');});
+}
+function filtraAno(t,a) { return D.registros.filter(function(r){return r.tipo===t && r.data.substring(0,4)==a;}); }
+function filtraAtividade(tipo,m,a,ativ) {
+  return D.registros.filter(function(r){
+    return r.tipo===tipo && r.atividade===ativ && r.data.substring(0,7)===a+'-'+String(m+1).padStart(2,'0');
+  });
+}
+function filtraAtividadeAno(tipo,a,ativ) {
+  return D.registros.filter(function(r){return r.tipo===tipo && r.atividade===ativ && r.data.substring(0,4)==a;});
+}
+function totalFiltro(t,m,a) { return soma(filtra(t,m,a)); }
+function nomeM(i) { return ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'][i]; }
+function nomeM3(i) { return ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'][i]; }
+function fmt(v) { return v.toFixed(2).replace('.',','); }
+function fmtR(v) { return 'R$ '+v.toFixed(2).replace('.',','); }
+function hoje() { return new Date().toISOString().split('T')[0]; }
+function dasAtual() {
+  var p = D.config.dasPersonalizado;
+  if (p && p > 0) return p;
+  var t = D.config.tipoAtividade;
+  if (t === 'comercio') return D.config.dasComercio;
+  if (t === 'servico') return D.config.dasServico;
+  return D.config.dasAmbos;
+}
+
+// ==================== CONFIG ====================
+function cfgSalvar() {
+  D.config.empresa = document.getElementById('cfgNome').value || 'Minha Empresa MEI';
+  D.config.metaMensal = parseFloat(document.getElementById('cfgMeta').value) || 5000;
+  D.config.tipoAtividade = document.getElementById('cfgTipo').value;
+  salvar(); render();
+}
+
+function abrirConfig() {
+  var c = D.config;
+  document.getElementById('modalTitle').textContent = 'Configurações';
+  document.getElementById('modalBody').innerHTML =
+    '<div class="ff"><div class="fl"><label>Nome da empresa</label><input id="mcfgNome" value="'+eH(c.empresa||'')+'"></div></div>'+
+    '<div class="ff"><div class="fl"><label>Meta mensal (R$)</label><input id="mcfgMeta" type="number" value="'+(c.metaMensal||5000)+'"></div>'+
+    '<div class="fl"><label>Tipo de atividade</label><select id="mcfgTipo">'+
+    '<option value="comercio"'+(c.tipoAtividade==='comercio'?' selected':'')+'>Comércio/Indústria</option>'+
+    '<option value="servico"'+(c.tipoAtividade==='servico'?' selected':'')+'>Serviço</option>'+
+    '<option value="ambos"'+(c.tipoAtividade==='ambos'?' selected':'')+'>Comércio + Serviço</option></select></div></div>'+
+    '<div class="ff"><div class="fl"><label>Limite anual (R$)</label><input id="mcfgLimite" type="number" value="'+(c.limiteAnual||81000)+'"></div>'+
+    '<div class="fl"><label>DAS personalizado (R$)</label><input id="mcfgDasP" type="number" step="0.01" placeholder="0 = usar padrão" value="'+(c.dasPersonalizado||0)+'"></div></div>'+
+    '<div class="ff"><div class="fl"><label>DAS Comércio 2026</label><input id="mcfgDasC" type="number" step="0.01" value="'+(c.dasComercio||82.05)+'"></div>'+
+    '<div class="fl"><label>DAS Serviço 2026</label><input id="mcfgDasS" type="number" step="0.01" value="'+(c.dasServico||86.05)+'"></div>'+
+    '<div class="fl"><label>DAS Misto 2026</label><input id="mcfgDasM" type="number" step="0.01" value="'+(c.dasAmbos||87.05)+'"></div></div>'+
+    '<div style="margin-top:12px;padding:12px;background:#f5f7fa;border-radius:8px;font-size:12px">'+
+    '<strong>Valores oficiais 2026:</strong> Comércio R$ 82,05 | Serviço R$ 86,05 | Misto R$ 87,05<br>'+
+    '<span style="color:#888">Base: salário mínimo R$ 1.621,00 (INSS 5% = R$ 81,05 + ICMS/ISS)</span></div>';
+  document.getElementById('modalOk').onclick = function() {
+    c.empresa = document.getElementById('mcfgNome').value || 'Minha Empresa MEI';
+    c.metaMensal = parseFloat(document.getElementById('mcfgMeta').value) || 5000;
+    c.tipoAtividade = document.getElementById('mcfgTipo').value;
+    c.limiteAnual = parseFloat(document.getElementById('mcfgLimite').value) || 81000;
+    c.dasPersonalizado = parseFloat(document.getElementById('mcfgDasP').value) || 0;
+    c.dasComercio = parseFloat(document.getElementById('mcfgDasC').value) || 82.05;
+    c.dasServico = parseFloat(document.getElementById('mcfgDasS').value) || 86.05;
+    c.dasAmbos = parseFloat(document.getElementById('mcfgDasM').value) || 87.05;
+    salvar(); fecharModal(); render();
+  };
+  document.getElementById('modal').style.display = 'flex';
+}
+
+function eH(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function fecharModal() { document.getElementById('modal').style.display = 'none'; }
+
+// ==================== RENDER ====================
+function render() {
+  renderStats();
+  renderAlertas();
+  renderFin();
+  renderDas();
+  renderAnual();
+  renderCli();
+  renderNf();
+  renderFluxo();
+  renderDasn();
+  renderRel();
+  renderGraficos();
+  document.getElementById('cfgNome').value = D.config.empresa || '';
+  document.getElementById('cfgMeta').value = D.config.metaMensal || 5000;
+  document.getElementById('cfgTipo').value = D.config.tipoAtividade || 'servico';
+}
+
+function renderStats() {
+  var agora = new Date(), mes = agora.getMonth(), ano = agora.getFullYear();
+  var r = totalFiltro('receita', mes, ano);
+  var d = totalFiltro('despesa', mes, ano);
+  var saldo = r - d;
+  var meta = D.config.metaMensal || 5000;
+  var pctMeta = meta>0 ? (r/meta*100) : 0;
+  var anual = soma(filtraAno('receita', ano));
+  var lim = D.config.limiteAnual || 81000;
+  var pctLim = anual/lim*100;
+  var das = dasAtual();
+  var limColor = pctLim>80 ? '#c62828' : pctLim>50 ? '#e65100' : '#0f3460';
+  document.getElementById('statsRow').innerHTML =
+    '<div class="stat-c"><div class="l">Empresa</div><div class="v bl" style="font-size:16px">'+eH(D.config.empresa||'MEI')+'</div><div class="s">'+tipoLabel(D.config.tipoAtividade)+'</div></div>'+
+    '<div class="stat-c"><div class="l">Receitas (mês)</div><div class="v gr">'+fmtR(r)+'</div><div class="s">'+pctMeta.toFixed(0)+'% da meta</div><div class="prog"><div class="prog-f" style="width:'+Math.min(pctMeta,100)+'%;background:#2e7d32"></div></div></div>'+
+    '<div class="stat-c"><div class="l">Despesas (mês)</div><div class="v rd">'+fmtR(d)+'</div></div>'+
+    '<div class="stat-c"><div class="l">Saldo do mês</div><div class="v '+(saldo>=0?'gr':'rd')+'">'+fmtR(saldo)+'</div></div>'+
+    '<div class="stat-c"><div class="l">DAS Mensal</div><div class="v or">'+fmtR(das)+' <span style="font-size:11px">fixo</span></div></div>'+
+    '<div class="stat-c"><div class="l">Limite Anual</div><div class="v bl">'+fmtR(anual)+'</div><div class="s">'+pctLim.toFixed(1)+'% de '+fmtR(lim)+'</div><div class="prog"><div class="prog-f" style="width:'+Math.min(pctLim,100)+'%;background:'+limColor+'"></div></div></div>';
+}
+
+function tipoLabel(t) { return t==='comercio'?'Comércio':t==='servico'?'Serviço':'Comércio+Serviço'; }
+
+function renderAlertas() {
+  var agora = new Date(), ano = agora.getFullYear();
+  var anual = soma(filtraAno('receita',ano));
+  var lim = D.config.limiteAnual || 81000;
+  var pct = anual/lim*100;
+  var html = '';
+  if (pct > 80) {
+    html += '<div class="alert alert-red">⚠️ <strong>Atenção!</strong> Você já utilizou <strong>'+pct.toFixed(1)+'%</strong> do limite anual (R$ '+fmtR(anual)+' de R$ '+fmtR(lim)+'). Procure um contador para planejar os próximos meses.</div>';
+  } else if (pct > 50) {
+    html += '<div class="alert alert-yellow">📊 Você já utilizou <strong>'+pct.toFixed(1)+'%</strong> do limite anual. Faltam R$ '+fmtR(lim-anual)+' para o teto de R$ '+fmtR(lim)+'.</div>';
+  } else {
+    html += '<div class="alert alert-green">✅ Dentro do limite anual. Você faturou R$ '+fmtR(anual)+' de R$ '+fmtR(lim)+' ('+pct.toFixed(1)+'%).</div>';
+  }
+  if (pct > 100 && pct <= 120) {
+    html += '<div class="alert alert-yellow">⚠️ Você excedeu o limite em até 20%. Será desenquadrado para ME a partir de 01/01 do próximo ano.</div>';
+  } else if (pct > 120) {
+    html += '<div class="alert alert-red">🚫 Você excedeu o limite em mais de 20%. O desenquadramento é retroativo a janeiro. Consulte um contador URGENTE.</div>';
+  }
+  // Check pendentes
+  var pendentes = D.registros.filter(function(r){return r.status==='pendente'||r.status==='atrasado';});
+  if (pendentes.length > 0) {
+    html += '<div class="alert alert-blue">📌 Você tem <strong>'+pendentes.length+'</strong> registro(s) pendente(s) ou atrasado(s).</div>';
+  }
+  document.getElementById('dashboardAlertas').innerHTML = html;
+}
+
+// ==================== FINANCEIRO ====================
+function finAdicionar() {
+  D.registros.push({id:D.nextId++,data:hoje(),tipo:'receita',descricao:'',categoria:'Venda de Produtos',atividade:'comercio',valor:0,status:'pendente',forma:'PIX'});
+  salvar(); render();
+}
+
+function finEditar(id,chave,valor) {
+  for (var i=0;i<D.registros.length;i++) {
+    if (D.registros[i].id===id) {
+      D.registros[i][chave]=valor;
+      if (chave==='tipo') D.registros[i].categoria=valor==='receita'?'Venda de Produtos':'Alimentação';
+      salvar(); render(); return;
+    }
+  }
+}
+
+function finRemover(id) {
+  if (!confirm('Remover este registro?')) return;
+  for (var i=0;i<D.registros.length;i++) {
+    if (D.registros[i].id===id) { D.registros.splice(i,1); break; }
+  }
+  salvar(); render();
+}
+
+function renderFin() {
+  var tb = document.getElementById('finTbody');
+  if (D.registros.length===0) {
+    tb.innerHTML='<tr><td colspan="7" class="emp"><p>Nenhum registro. Clique em "+ Novo".</p></td></tr>';
+    document.getElementById('finTotal').textContent='Saldo: R$ 0,00'; return;
+  }
+  var sorted = D.registros.slice().sort(function(a,b){return a.data.localeCompare(b.data)||a.id-b.id;});
+  var html='',tr=0,td=0;
+  for (var i=0;i<sorted.length;i++) {
+    var r=sorted[i];
+    tr+=r.tipo==='receita'?r.valor:0; td+=r.tipo==='despesa'?r.valor:0;
+    var stOpts=r.tipo==='receita'
+      ? '<option value="recebido"'+(r.status==='recebido'?' selected':'')+'>Recebido</option><option value="pendente"'+(r.status==='pendente'?' selected':'')+'>Pendente</option><option value="atrasado"'+(r.status==='atrasado'?' selected':'')+'>Atrasado</option>'
+      : '<option value="pago"'+(r.status==='pago'?' selected':'')+'>Pago</option><option value="pendente"'+(r.status==='pendente'?' selected':'')+'>Pendente</option><option value="atrasado"'+(r.status==='atrasado'?' selected':'')+'>Atrasado</option>';
+    var stCls=r.status==='recebido'||r.status==='pago'?'a':r.status==='pendente'?'b':'c';
+    var catOpts=r.tipo==='receita'
+      ? '<option value="Venda de Produtos"'+(r.categoria==='Venda de Produtos'?' selected':'')+'>Venda de Produtos</option><option value="Prestação de Serviços"'+(r.categoria==='Prestação de Serviços'?' selected':'')+'>Prestação de Serviços</option><option value="Outros"'+(r.categoria==='Outros'?' selected':'')+'>Outros</option>'
+      : '<option value="Alimentação"'+(r.categoria==='Alimentação'?' selected':'')+'>Alimentação</option><option value="Transporte"'+(r.categoria==='Transporte'?' selected':'')+'>Transporte</option><option value="Material Escritório"'+(r.categoria==='Material Escritório'?' selected':'')+'>Material Escritório</option><option value="Marketing"'+(r.categoria==='Marketing'?' selected':'')+'>Marketing</option><option value="Ferramentas/Software"'+(r.categoria==='Ferramentas/Software'?' selected':'')+'>Ferramentas/Software</option><option value="Utilidades"'+(r.categoria==='Utilidades'?' selected':'')+'>Utilidades</option><option value="Aluguel"'+(r.categoria==='Aluguel'?' selected':'')+'>Aluguel</option><option value="Pró-labore"'+(r.categoria==='Pró-labore'?' selected':'')+'>Pró-labore</option><option value="Impostos"'+(r.categoria==='Impostos'?' selected':'')+'>Impostos</option><option value="Saúde"'+(r.categoria==='Saúde'?' selected':'')+'>Saúde</option><option value="Educação"'+(r.categoria==='Educação'?' selected':'')+'>Educação</option><option value="Outros"'+(r.categoria==='Outros'?' selected':'')+'>Outros</option>';
+    html += '<tr><td><input type="date" value="'+r.data+'" onchange="finEditar('+r.id+',\'data\',this.value)" style="font-size:12px"></td>'+
+      '<td><select onchange="finEditar('+r.id+',\'tipo\',this.value)" style="font-size:12px"><option value="receita"'+(r.tipo==='receita'?' selected':'')+'>Receita</option><option value="despesa"'+(r.tipo==='despesa'?' selected':'')+'>Despesa</option></select></td>'+
+      '<td><input type="text" value="'+eH(r.descricao||'')+'" onchange="finEditar('+r.id+',\'descricao\',this.value)" placeholder="Descrição" style="font-size:12px"></td>'+
+      '<td><select onchange="finEditar('+r.id+',\'categoria\',this.value)" style="font-size:12px">'+catOpts+'</select></td>'+
+      '<td><input type="number" step="0.01" value="'+r.valor+'" onchange="finEditar('+r.id+',\'valor\',parseFloat(this.value)||0)" style="font-size:12px;text-align:right;width:110px"></td>'+
+      '<td><select onchange="finEditar('+r.id+',\'status\',this.value)" style="font-size:12px">'+stOpts+'</select> <span class="badge-st '+stCls+'" style="margin-left:2px">'+r.status+'</span></td>'+
+      '<td><button class="btn btn-d btn-sm" onclick="finRemover('+r.id+')" style="padding:3px 7px;font-size:10px">X</button></td></tr>';
+  }
+  var saldo=tr-td;
+  html+='<tr class="tot"><td colspan="2" style="text-align:right">Totais</td><td></td><td></td><td><span class="g">'+fmtR(tr)+'</span> | <span class="r">'+fmtR(td)+'</span></td><td colspan="2"></td></tr>';
+  tb.innerHTML=html;
+  document.getElementById('finTotal').textContent='Saldo: '+fmtR(saldo)+' (Receitas: '+fmtR(tr)+' | Despesas: '+fmtR(td)+')';
+}
+
+// ==================== DAS ====================
+function dasRender() {
+  var t = D.config.tipoAtividade;
+  var cards = document.getElementById('dasCards');
+  var p = D.config.dasPersonalizado;
+  var sel = t==='comercio'?' style="border:2px solid #0f3460"':t==='servico'?' style="border:2px solid #0f3460"':' style="border:2px solid #0f3460"';
+  cards.innerHTML =
+    '<div class="dash-card"><div class="n">'+fmtR(D.config.dasComercio)+'</div><div class="l">Comércio</div>'+(t==='comercio'?'<div class="c" style="color:#0f3460;font-weight:600">✓ Seu plano</div>':'')+'</div>'+
+    '<div class="dash-card"><div class="n">'+fmtR(D.config.dasServico)+'</div><div class="l">Serviço</div>'+(t==='servico'?'<div class="c" style="color:#0f3460;font-weight:600">✓ Seu plano</div>':'')+'</div>'+
+    '<div class="dash-card"><div class="n">'+fmtR(D.config.dasAmbos)+'</div><div class="l">Comércio + Serviço</div>'+(t==='ambos'?'<div class="c" style="color:#0f3460;font-weight:600">✓ Seu plano</div>':'')+'</div>';
+  if (p && p>0) cards.innerHTML+='<div class="dash-card" style="border:2px solid #e65100"><div class="n">'+fmtR(p)+'</div><div class="l">Personalizado</div></div>';
+  dasHistorico();
+}
+
+function dasHistorico() {
+  var tb=document.getElementById('dasTbody'),agora=new Date(),ano=agora.getFullYear(),html='';
+  for(var m=0;m<12;m++){
+    var key=ano+'-'+String(m+1).padStart(2,'0');
+    var pago=false;
+    for(var i=0;i<D.dasHistorico.length;i++){if(D.dasHistorico[i].mes===key){pago=D.dasHistorico[i].pago;break;}}
+    var atual=(m===agora.getMonth());
+    html+='<tr'+(atual?' style="background:#f0f4ff"':'')+'>'+
+      '<td>'+(atual?'<strong>':'')+nomeM(m)+'/'+ano+(atual?'</strong>':'')+'</td>'+
+      '<td>'+fmtR(dasAtual())+'</td>'+
+      '<td>'+(pago?'<span class="badge-st a">Pago ✓</span>':(atual?'<span class="badge-st b">A pagar</span>':'<span class="badge-st c">Não pago</span>'))+'</td>'+
+      '<td><button class="btn '+(pago?'btn-o':'btn-s')+' btn-sm" onclick="dasToggle(\''+key+'\')" style="font-size:10px">'+(pago?'Desmarcar':'Marcar pago')+'</button></td></tr>';
+  }
+  tb.innerHTML=html;
+}
+
+function dasToggle(key){
+  for(var i=0;i<D.dasHistorico.length;i++){if(D.dasHistorico[i].mes===key){D.dasHistorico[i].pago=!D.dasHistorico[i].pago;salvar();dasHistorico();return;}}
+  D.dasHistorico.push({mes:key,pago:true});salvar();dasHistorico();
+}
+
+// ==================== ANUAL ====================
+function renderAnual(){
+  var agora=new Date(),ano=agora.getFullYear(),html='',acum=0;
+  for(var m=0;m<12;m++){
+    var rec=totalFiltro('receita',m,ano),desp=totalFiltro('despesa',m,ano);
+    acum+=rec;var das=dasAtual(),pct=acum/(D.config.limiteAnual||81000)*100;
+    var st=pct>80?'<span class="badge-st c">Atenção</span>':pct>50?'<span class="badge-st b">Ok</span>':'<span class="badge-st a">Seguro</span>';
+    var atual=(m===agora.getMonth());
+    html+='<tr'+(atual?' style="background:#f0f4ff"':'')+'>'+
+      '<td>'+(atual?'<strong>':'')+nomeM(m)+(atual?'</strong>':'')+'</td><td>'+fmtR(rec)+'</td><td>'+fmtR(desp)+'</td>'+
+      '<td class="'+(rec-desp>=0?'g':'r')+'">'+fmtR(rec-desp)+'</td><td><strong>'+fmtR(acum)+'</strong></td>'+
+      '<td>'+pct.toFixed(1)+'%</td><td>'+fmtR(das)+'</td><td>'+st+'</td></tr>';
+  }
+  document.getElementById('anualTbody').innerHTML=html;
+  var mesesRec={};
+  for(var i=0;i<D.registros.length;i++){if(D.registros[i].tipo==='receita'){var k=D.registros[i].data.substring(0,7);mesesRec[k]=(mesesRec[k]||0)+D.registros[i].valor;}}
+  var vals=Object.values(mesesRec);
+  if(vals.length>=2){
+    var ultimos=vals.slice(-3),media=ultimos.reduce(function(s,v){return s+v;},0)/ultimos.length;
+    var fatAnual=0;for(var i=0;i<D.registros.length;i++){if(D.registros[i].tipo==='receita'&&D.registros[i].data.substring(0,4)==ano)fatAnual+=D.registros[i].valor;}
+    if(media>0){
+      var restante=((D.config.limiteAnual||81000)-fatAnual)/media;
+      if(restante<=0) document.getElementById('projBox').innerHTML='<div class="d" style="color:#c62828">Limite excedido!</div><div class="n">Você ultrapassou o teto anual. Consulte um contador imediatamente.</div>';
+      else if(restante<=3){
+        var mp=agora.getMonth()+Math.ceil(restante),ap=ano+Math.floor(mp/12);
+        document.getElementById('projBox').innerHTML='<div class="d">'+nomeM(mp%12)+'/'+ap+'</div><div class="n">Estouro estimado em ~'+restante.toFixed(1)+' meses. Média: '+fmtR(media)+'/mês</div>';
+      } else {
+        document.getElementById('projBox').innerHTML='<div class="d" style="color:#2e7d32">Tranquilo</div><div class="n">Com média de '+fmtR(media)+'/mês, ~'+restante.toFixed(0)+' meses até o limite.</div>';
+      }
+    }
+  } else {
+    document.getElementById('projBox').innerHTML='<div class="d">Sem dados</div><div class="n">Adicione 2+ meses de receitas.</div>';
+  }
+}
+
+// ==================== CLIENTES ====================
+function cliAdicionar(){D.clientes.push({id:D.nextCliId++,nome:'Novo cliente',contato:'',cnpj:'',obs:''});salvar();renderCli();}
+function cliEditar(id,chave,valor){for(var i=0;i<D.clientes.length;i++){if(D.clientes[i].id===id){D.clientes[i][chave]=valor;salvar();renderCli();return;}}}
+function cliRemover(id){if(!confirm('Remover?'))return;for(var i=0;i<D.clientes.length;i++){if(D.clientes[i].id===id){D.clientes.splice(i,1);break;}}salvar();renderCli();}
+function renderCli(){
+  var tb=document.getElementById('cliTbody');
+  if(D.clientes.length===0){tb.innerHTML='<tr><td colspan="5" class="emp"><p>Nenhum cliente.</p></td></tr>';return;}
+  var html='';
+  for(var i=0;i<D.clientes.length;i++){
+    var c=D.clientes[i],totalNF=0;
+    for(var j=0;j<D.notasFiscais.length;j++){if(D.notasFiscais[j].cliente===c.nome&&D.notasFiscais[j].status!=='cancelada')totalNF+=D.notasFiscais[j].valor;}
+    html+='<tr><td><input type="text" value="'+eH(c.nome)+'" onchange="cliEditar('+c.id+',\'nome\',this.value)" style="font-weight:600"></td>'+
+      '<td><input type="text" value="'+eH(c.contato||'')+'" onchange="cliEditar('+c.id+',\'contato\',this.value)" placeholder="Telefone"></td>'+
+      '<td><input type="text" value="'+eH(c.cnpj||'')+'" onchange="cliEditar('+c.id+',\'cnpj\',this.value)" placeholder="CPF/CNPJ" style="width:140px"></td>'+
+      '<td>'+fmtR(totalNF)+'</td><td><button class="btn btn-d btn-sm" onclick="cliRemover('+c.id+')" style="padding:3px 7px;font-size:10px">X</button></td></tr>';
+  }
+  tb.innerHTML=html;
+}
+
+// ==================== NF ====================
+function nfAdicionar(){
+  var nc=D.clientes.length>0?D.clientes[0].nome:'';
+  D.notasFiscais.push({id:D.nextNfId++,numero:'NF-'+(1001+D.notasFiscais.length).toString().substring(1),cliente:nc,data:hoje(),servico:'',valor:0,status:'emitida'});
+  salvar();renderNf();
+}
+function nfEditar(id,chave,valor){for(var i=0;i<D.notasFiscais.length;i++){if(D.notasFiscais[i].id===id){D.notasFiscais[i][chave]=valor;salvar();renderNf();return;}}}
+function nfRemover(id){if(!confirm('Remover?'))return;for(var i=0;i<D.notasFiscais.length;i++){if(D.notasFiscais[i].id===id){D.notasFiscais.splice(i,1);break;}}salvar();renderNf();}
+function renderNf(){
+  var tb=document.getElementById('nfTbody');
+  if(D.notasFiscais.length===0){tb.innerHTML='<tr><td colspan="6" class="emp"><p>Nenhuma nota.</p></td></tr>';return;}
+  var html='';
+  for(var i=0;i<D.notasFiscais.length;i++){
+    var n=D.notasFiscais[i],co='';
+    for(var j=0;j<D.clientes.length;j++){co+='<option value="'+eH(D.clientes[j].nome)+'"'+(n.cliente===D.clientes[j].nome?' selected':'')+'>'+eH(D.clientes[j].nome)+'</option>';}
+    html+='<tr><td><strong>'+n.numero+'</strong></td><td><select onchange="nfEditar('+n.id+',\'cliente\',this.value)">'+co+'</select></td>'+
+      '<td><input type="date" value="'+n.data+'" onchange="nfEditar('+n.id+',\'data\',this.value)" style="font-size:12px"></td>'+
+      '<td><input type="text" value="'+eH(n.servico||'')+'" onchange="nfEditar('+n.id+',\'servico\',this.value)" placeholder="Descrição"></td>'+
+      '<td><input type="number" step="0.01" value="'+n.valor+'" onchange="nfEditar('+n.id+',\'valor\',parseFloat(this.value)||0)" style="text-align:right;width:110px"></td>'+
+      '<td><select onchange="nfEditar('+n.id+',\'status\',this.value)"><option value="emitida"'+(n.status==='emitida'?' selected':'')+'>Emitida</option><option value="cancelada"'+(n.status==='cancelada'?' selected':'')+'>Cancelada</option></select></td>'+
+      '<td><button class="btn btn-d btn-sm" onclick="nfRemover('+n.id+')" style="padding:3px 7px;font-size:10px">X</button></td></tr>';
+  }
+  tb.innerHTML=html;
+}
+
+// ==================== FLUXO ====================
+function renderFluxo(){
+  var agora=new Date(),mes=agora.getMonth(),ano=agora.getFullYear(),mr=[],md=[];
+  for(var i=3;i>=1;i--){var m=mes-i,a=ano;if(m<0){m+=12;a-=1;}mr.push(totalFiltro('receita',m,a));md.push(totalFiltro('despesa',m,a));}
+  var medR=mr.reduce(function(s,v){return s+v;},0)/3,medD=md.reduce(function(s,v){return s+v;},0)/3,das=dasAtual();
+  if(isNaN(medR)||medR===0){document.getElementById('fluxoTbody').innerHTML='<tr><td colspan="6" class="emp"><p>Adicione registros nos últimos 3 meses.</p></td></tr>';document.getElementById('fluxoInd').innerHTML='';return;}
+  var html='',acum=0;
+  for(var i=1;i<=3;i++){var m2=mes+i,a2=ano+Math.floor(m2/12),mN=nomeM(m2%12),sp=medR-medD-das;acum+=sp;
+    html+='<tr><td><strong>'+mN+'/'+a2+'</strong></td><td>'+fmtR(medR)+'</td><td>'+fmtR(medD)+'</td><td>'+fmtR(das)+'</td><td class="'+(sp>=0?'g':'r')+'">'+fmtR(sp)+'</td><td class="'+(acum>=0?'g':'r')+'"><strong>'+fmtR(acum)+'</strong></td></tr>';}
+  document.getElementById('fluxoTbody').innerHTML=html;
+  var margem=medR>0?((medR-medD-das)/medR*100):0;
+  document.getElementById('fluxoInd').innerHTML=
+    '<div class="dash-card"><div class="n">'+fmtR(medR)+'</div><div class="l">Média receitas/mês</div></div>'+
+    '<div class="dash-card"><div class="n">'+fmtR(medD)+'</div><div class="l">Média despesas/mês</div></div>'+
+    '<div class="dash-card"><div class="n'+(margem>=20?' gr':margem>=10?' or':' rd')+'">'+margem.toFixed(1)+'%</div><div class="l">Margem líquida</div><div class="c">'+(margem>=20?'Saudável':margem>=10?'Regular':'Atenção')+'</div></div>';
+}
+
+// ==================== DASN-SIMEI ====================
+function renderDasn() {
+  var agora=new Date(),ano=agora.getFullYear(),anoAnt=ano-1;
+  var html='';
+  // Ano anterior (para declarar agora)
+  html+= '<h3 style="font-size:14px;margin-bottom:10px">Ano-calendário: <strong>'+anoAnt+'</strong> (entregar até 31/05/'+ano+')</h3>';
+  html+= '<div class="dasn-grid">';
+  var recVenda=0,recServico=0;
+  for(var i=0;i<D.registros.length;i++){
+    var r=D.registros[i];
+    if(r.tipo==='receita'&&r.data.substring(0,4)==anoAnt){
+      if(r.atividade==='comercio') recVenda+=r.valor;
+      else recServico+=r.valor;
+    }
+  }
+  var totAnual=recVenda+recServico;
+  html+= '<div class="dasn-val"><div class="vl">'+fmtR(recVenda)+'</div><div class="lb">Receita de Vendas</div></div>';
+  html+= '<div class="dasn-val"><div class="vl">'+fmtR(recServico)+'</div><div class="lb">Receita de Serviços</div></div>';
+  html+= '<div class="dasn-val"><div class="vl">'+fmtR(totAnual)+'</div><div class="lb">Receita Bruta Total</div></div>';
+  html+= '</div>';
+  html+= '<div style="background:#f5f7fa;border-radius:8px;padding:16px;margin-bottom:16px">';
+  if(totAnual===0){
+    html+= '<p style="font-size:13px">Nenhuma receita registrada em '+anoAnt+'. <strong>Mesmo assim, a declaração DASN-SIMEI é obrigatória</strong> — informe R$ 0,00 nos campos.</p>';
+  } else {
+    html+= '<p style="font-size:13px">Use os valores acima para preencher a <strong>Declaração Anual DASN-SIMEI</strong> no <a href="https://www.gov.br/empresas-e-negocios/pt-br/empreendedor" target="_blank" style="color:#0f3460">Portal do Empreendedor</a>.</p>';
+  }
+  html+= '<div style="margin-top:10px;font-size:12px;color:#888">Prazo: até 31 de maio de '+ano+' | Multa por atraso: a partir de R$ 50,00</div></div>';
+
+  // Ano atual (parcial)
+  html+= '<h3 style="font-size:14px;margin:16px 0 10px">Ano atual: <strong>'+ano+'</strong> (parcial — acompanhamento)</h3>';
+  html+= '<div class="dasn-grid">';
+  var recVendaAtual=0,recServicoAtual=0;
+  for(var i=0;i<D.registros.length;i++){
+    var r=D.registros[i];
+    if(r.tipo==='receita'&&r.data.substring(0,4)==ano){
+      if(r.atividade==='comercio') recVendaAtual+=r.valor;
+      else recServicoAtual+=r.valor;
+    }
+  }
+  html+= '<div class="dasn-val"><div class="vl">'+fmtR(recVendaAtual)+'</div><div class="lb">Vendas (até agora)</div></div>';
+  html+= '<div class="dasn-val"><div class="vl">'+fmtR(recServicoAtual)+'</div><div class="lb">Serviços (até agora)</div></div>';
+  html+= '<div class="dasn-val"><div class="vl">'+fmtR(recVendaAtual+recServicoAtual)+'</div><div class="lb">Total parcial</div></div>';
+  html+= '</div>';
+  document.getElementById('dasnConteudo').innerHTML=html;
+}
+
+// ==================== RELATÓRIOS ====================
+function renderRel() {
+  var sorted=D.registros.slice().sort(function(a,b){return a.data.localeCompare(b.data);});
+  if(sorted.length===0){document.getElementById('extratoHtml').innerHTML='<div class="emp"><p>Nenhum registro.</p></div>';document.getElementById('resumoHtml').innerHTML='';return;}
+  var html='<table><tr><th>Data</th><th>Tipo</th><th>Descrição</th><th>Categoria</th><th>Status</th><th>Valor</th></tr>';
+  for(var i=0;i<sorted.length;i++){var r=sorted[i];
+    html+='<tr><td>'+new Date(r.data+'T12:00:00').toLocaleDateString('pt-BR')+'</td><td>'+(r.tipo==='receita'?'Receita':'Despesa')+'</td><td>'+(r.descricao||'-')+'</td><td>'+r.categoria+'</td><td>'+r.status+'</td><td style="text-align:right;color:'+(r.tipo==='receita'?'#2e7d32':'#c62828')+'">'+fmtR(r.valor)+'</td></tr>';}
+  html+='</table>';
+  document.getElementById('extratoHtml').innerHTML=html;
+  var agora=new Date(),ano=agora.getFullYear();
+  var totRec=soma(filtraAno('receita',ano)),totDesp=soma(filtraAno('despesa',ano)),lim=D.config.limiteAnual||81000,regs=D.registros.length;
+  document.getElementById('resumoHtml').innerHTML=
+    '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:8px">'+
+    '<div class="dash-card"><div class="n gr">'+fmtR(totRec)+'</div><div class="l">Receitas '+ano+'</div></div>'+
+    '<div class="dash-card"><div class="n rd">'+fmtR(totDesp)+'</div><div class="l">Despesas '+ano+'</div></div>'+
+    '<div class="dash-card"><div class="n '+(totRec-totDesp>=0?'gr':'rd')+'">'+fmtR(totRec-totDesp)+'</div><div class="l">Saldo '+ano+'</div></div>'+
+    '<div class="dash-card"><div class="n bl">'+fmtR(dasAtual())+'</div><div class="l">DAS mensal</div></div>'+
+    '<div class="dash-card"><div class="n bl">'+(totRec/lim*100).toFixed(1)+'%</div><div class="l">Limite utilizado</div></div>'+
+    '<div class="dash-card"><div class="n">'+regs+'</div><div class="l">Lançamentos</div></div></div>';
+}
+
+// ==================== GRÁFICOS ====================
+var charts={};
+function renderGraficos(){
+  var agora=new Date(),ano=agora.getFullYear(),labels=[],recData=[],despData=[];
+  for(var i=5;i>=0;i--){var m=agora.getMonth()-i,a=ano;if(m<0){m+=12;a-=1;}labels.push(nomeM3(m));recData.push(totalFiltro('receita',m,a));despData.push(totalFiltro('despesa',m,a));}
+  if(charts.linha)charts.linha.destroy();
+  charts.linha=new Chart(document.getElementById('chLinha').getContext('2d'),{
+    type:'line',data:{labels:labels,datasets:[
+      {label:'Receitas',data:recData,borderColor:'#2e7d32',backgroundColor:'rgba(46,125,50,0.08)',fill:true,tension:.3,pointRadius:3},
+      {label:'Despesas',data:despData,borderColor:'#c62828',backgroundColor:'rgba(198,40,40,0.08)',fill:true,tension:.3,pointRadius:3}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{boxWidth:12,font:{size:11},usePointStyle:true}}},scales:{y:{beginAtZero:true,ticks:{callback:function(v){return'R$'+v.toFixed(0);}}}}}
+  });
+  var despAno=filtraAno('despesa',ano),cats={};
+  for(var i=0;i<despAno.length;i++)cats[despAno[i].categoria]=(cats[despAno[i].categoria]||0)+despAno[i].valor;
+  var pieL=Object.keys(cats),pieD=Object.values(cats),cores=['#e65100','#1565c0','#2e7d32','#6a1b9a','#c62828','#00838f','#f57f17','#37474f','#4e342e','#5d4037','#4527a0','#1b5e20'];
+  if(charts.pizza)charts.pizza.destroy();
+  charts.pizza=new Chart(document.getElementById('chPizza').getContext('2d'),{
+    type:'doughnut',data:{labels:pieL.length?pieL:['Sem dados'],datasets:[{data:pieL.length?pieD:[1],backgroundColor:cores.slice(0,Math.max(pieL.length,1)),borderWidth:1}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{boxWidth:12,font:{size:10}}}}}
+  });
+}
+
+// ==================== EXPORT ====================
+function exportarCSV(){
+  var h='Data,Tipo,Descrição,Categoria,Valor,Status\n';
+  for(var i=0;i<D.registros.length;i++){var r=D.registros[i];h+=r.data+','+r.tipo+',"'+r.descricao+'",'+r.categoria+','+r.valor.toFixed(2)+','+r.status+'\n';}
+  var b=new Blob(['\ufeff'+h],{type:'text/csv;charset=utf-8;'});
+  var l=document.createElement('a');l.href=URL.createObjectURL(b);
+  l.download='planilha-mei-'+hoje()+'.csv';l.click();URL.revokeObjectURL(l.href);
+}
+
+// ==================== NAVEGAÇÃO ====================
+document.getElementById('navTab').addEventListener('click',function(e){
+  var btn=e.target.closest('button');if(!btn||!btn.dataset.t)return;
+  document.querySelectorAll('#navTab button').forEach(function(b){b.classList.remove('act');});
+  btn.classList.add('act');
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('act');});
+  document.getElementById('t-'+btn.dataset.t).classList.add('act');
+  if(btn.dataset.t==='das')dasRender();
+  if(btn.dataset.t==='relatorio')renderRel();
+  if(btn.dataset.t==='dasn')renderDasn();
+});
+
+// ==================== INIT ====================
+render();
+</script>
+</body>
+</html>
