@@ -153,7 +153,7 @@ footer{text-align:center;padding:32px 24px;font-size:12px;color:#bbb}
   .sticky-bottom .info{font-size:12px}
 }
 </style>
-<!-- Facebook Pixel -->
+<!-- Facebook Pixel + API Melhorado -->
 <script>
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -164,7 +164,44 @@ t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '1262807002454711');
-fbq('track', 'PageView');
+
+// Enhancements: eventID, fbp/fbc, parâmetros avançados
+(function(){
+  var ID = '1262807002454711';
+  var PROD = 'Planilha MEI Definitiva';
+  var VAL = 47.00;
+
+  function getCookie(n){var m=document.cookie.match(new RegExp('(^| )'+n+'=([^;]+)'));return m?decodeURIComponent(m[2]):null}
+  function eid(){return Date.now().toString(36)+Math.random().toString(36).substr(2,7)}
+  var fbp = getCookie('_fbp');
+  var fbc = getCookie('_fbc');
+
+  function baseParams(){return{content_name:PROD,content_type:'product',content_category:'Ferramenta MEI',value:VAL,currency:'BRL',fbp:fbp,fbc:fbc}}
+
+  fbq('track','PageView',baseParams(),{eventID:eid()});
+
+  var heroView = false;
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting && !heroView){
+        heroView = true;
+        fbq('track','ViewContent',Object.assign(baseParams(),{content_ids:['planilha-mei'],num_items:1}),{eventID:eid()});
+        obs.disconnect();
+      }
+    });
+  },{threshold:0.5});
+  setTimeout(function(){
+    var el = document.querySelector('.hero');
+    if(el) obs.observe(el);
+  },500);
+
+  window.trackCheckout = function(){
+    var params = Object.assign(baseParams(),{content_ids:['planilha-mei'],num_items:1});
+    var id = eid();
+    fbq('track','InitiateCheckout',params,{eventID:id});
+    return true;
+  };
+})();
 </script>
 </head>
 <body>
@@ -189,7 +226,7 @@ fbq('track', 'PageView');
     <span class="price-current"><span class="moeda">R$</span> 47,00</span>
   </div>
   <p class="price-small">à vista no PIX — Acesso vitalício + atualizações gratuitas</p>
-  <a href="https://pay.cakto.com.br/cfh3gr2_980898" class="btn-hero" target="_blank" onclick="fbq('track', 'InitiateCheckout');">🔥 QUERO ORGANIZAR MEU MEI</a>
+  <a href="https://pay.cakto.com.br/cfh3gr2_980898" class="btn-hero" target="_blank" onclick="trackCheckout();">🔥 QUERO ORGANIZAR MEU MEI</a>
   <div class="trust">
     <span>Acesso imediato via PIX</span>
     <span>Não precisa de Excel</span>
@@ -266,7 +303,7 @@ fbq('track', 'PageView');
         <li><strong>Relatório contábil</strong> pronto para imprimir</li>
       </ul>
       <div class="sec-btn">
-        <a href="https://pay.cakto.com.br/cfh3gr2_980898" class="btn-hero btn-hero-2" style="font-size:15px;padding:13px 32px" target="_blank" onclick="fbq('track', 'InitiateCheckout');">🔥 QUERO MINHA PLANILHA AGORA</a>
+        <a href="https://pay.cakto.com.br/cfh3gr2_980898" class="btn-hero btn-hero-2" style="font-size:15px;padding:13px 32px" target="_blank" onclick="trackCheckout();">🔥 QUERO MINHA PLANILHA AGORA</a>
       </div>
     </div>
     <div class="mockup">
@@ -569,7 +606,7 @@ fbq('track', 'PageView');
         <li>Suporte por e-mail em horário comercial</li>
         <li>7 dias de garantia incondicional</li>
       </ul>
-      <a href="https://pay.cakto.com.br/cfh3gr2_980898" class="btn-comprar" target="_blank" onclick="fbq('track', 'InitiateCheckout');">🔥 QUERO MINHA PLANILHA AGORA</a>
+      <a href="https://pay.cakto.com.br/cfh3gr2_980898" class="btn-comprar" target="_blank" onclick="trackCheckout();">🔥 QUERO MINHA PLANILHA AGORA</a>
       <div class="garantia" style="color:rgba(255,255,255,.5)">🔒 Pagamento via PIX — Acesso imediato — 7 dias de garantia</div>
     </div>
   </div>
@@ -622,7 +659,7 @@ fbq('track', 'PageView');
 
 <div class="sticky-bottom" id="stickyBar">
   <div class="info"><strong>Planilha MEI Definitiva</strong> — <s>R$ 197</s> <strong style="color:#00E676"><span class="moeda">R$</span> 47</strong></div>
-  <a href="https://pay.cakto.com.br/cfh3gr2_980898" class="btn-small" target="_blank" onclick="fbq('track', 'InitiateCheckout');">🔥 COMPRAR</a>
+  <a href="https://pay.cakto.com.br/cfh3gr2_980898" class="btn-small" target="_blank" onclick="trackCheckout();">🔥 COMPRAR</a>
 </div>
 
 <script>
