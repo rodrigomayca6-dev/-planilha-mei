@@ -21,11 +21,11 @@ body{font-family:'Inter','Segoe UI',system-ui,sans-serif;background:#fff;color:#
 .hero .sub2{font-size:14px;opacity:.6;margin-bottom:28px}
 
 .hero .price-area{margin-bottom:6px}
-.hero .price-old{color:#ef5350;font-weight:800;position:relative;display:inline-block;margin-right:8px}
+.hero .price-old{color:#ef5350;font-weight:800;position:relative;display:inline-block;margin-right:8px;font-size:clamp(24px,7vw,40px)}
 .hero .price-old .x1{position:absolute;top:50%;left:-8%;right:-8%;height:3px;background:#ef5350;transform:rotate(-10deg)}
 .hero .price-old .x2{position:absolute;top:50%;left:-8%;right:-8%;height:3px;background:#ef5350;transform:rotate(10deg)}
-.hero .price-current{color:#00E676;font-weight:900}
-.hero .price-current span{font-size:18px;font-weight:400;opacity:.7;letter-spacing:0}
+.hero .price-current{color:#00E676;font-weight:900;font-size:clamp(30px,8vw,48px)}
+.hero .price-current .moeda{font-size:.45em;font-weight:400;opacity:.7;letter-spacing:0}
 .hero .price-small{font-size:14px;opacity:.6;margin-bottom:24px}
 .btn-hero{display:inline-flex;align-items:center;gap:8px;padding:16px 40px;background:#00E676;color:#0a1628;border:none;border-radius:50px;font-size:17px;font-weight:700;cursor:pointer;text-decoration:none;transition:all .2s;box-shadow:0 4px 20px rgba(0,230,118,.3)}
 .btn-hero:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,230,118,.4)}
@@ -143,13 +143,12 @@ footer{text-align:center;padding:32px 24px;font-size:12px;color:#bbb}
 .sticky-bottom.show{transform:translateY(0)}
 .sticky-bottom .info{font-size:13px}
 .sticky-bottom .info strong{font-size:15px;color:#0a1628}
+.sticky-bottom .moeda{font-size:.65em;font-weight:400;opacity:.7}
 .sticky-bottom .info s{color:#999}
 .sticky-bottom .btn-small{padding:10px 24px;background:#00E676;color:#0a1628;border:none;border-radius:50px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;transition:.2s;white-space:nowrap}
 .sticky-bottom .btn-small:hover{box-shadow:0 4px 16px rgba(0,230,118,.3)}
 @media(max-width:600px){
   .hero{padding:90px 16px 40px}
-  .hero .price-current{font-size:36px}
-  .hero .price-old{font-size:28px}
   .section{padding:40px 16px}
   .sticky-bottom .info{font-size:12px}
 }
@@ -184,10 +183,10 @@ fbq('track', 'PageView');
   
   <div class="price-area">
     <span style="font-size:18px;color:#fff;font-weight:600;vertical-align:middle;margin-right:3px">DE</span>
-    <span class="price-old" style="font-size:40px;vertical-align:middle">R$ 197<div class="x1"></div><div class="x2"></div></span>
+    <span class="price-old">R$ 197<div class="x1"></div><div class="x2"></div></span>
     <span style="font-size:18px;color:#fff;font-weight:600;vertical-align:middle;margin:0 3px">POR</span>
     <span style="font-size:18px;color:#fff;font-weight:600;vertical-align:middle;margin-right:4px">APENAS</span>
-    <span class="price-current" style="font-size:48px;vertical-align:middle">R$ 47,00</span>
+    <span class="price-current"><span class="moeda">R$</span> 47,00</span>
   </div>
   <p class="price-small">à vista no PIX — Acesso vitalício + atualizações gratuitas</p>
   <a href="https://pay.cakto.com.br/cfh3gr2_980898" class="btn-hero" target="_blank" onclick="fbq('track', 'InitiateCheckout');">🔥 QUERO ORGANIZAR MEU MEI</a>
@@ -560,7 +559,7 @@ fbq('track', 'PageView');
     <div class="price-card" style="border-color:rgba(0,230,118,.4);background:rgba(255,255,255,.05)">
       <div class="tag-top">MAIS VENDIDA</div>
       <div class="old" style="font-size:14px;color:rgba(255,255,255,.6)">DE <span class="num" style="font-size:32px;color:#ef5350;font-weight:800;position:relative;display:inline-block">R$ 197<div class="x1" style="position:absolute;top:50%;left:-8%;right:-8%;height:3px;background:#ef5350;transform:rotate(-10deg)"></div><div class="x2" style="position:absolute;top:50%;left:-8%;right:-8%;height:3px;background:#ef5350;transform:rotate(10deg)"></div></span></div>
-      <div class="current" style="margin-top:4px"><span style="color:#fff;font-size:16px;font-weight:600;vertical-align:middle">POR APENAS</span> <span class="val" style="font-size:42px;font-weight:900;color:#00E676;vertical-align:middle">R$ 47,00</span></div>
+      <div class="current" style="margin-top:4px"><span style="color:#fff;font-size:16px;font-weight:600;vertical-align:middle">POR APENAS</span> <span class="val" style="font-weight:900;color:#00E676;vertical-align:middle;font-size:clamp(28px,7vw,42px)"><span style="font-size:.45em;font-weight:400;opacity:.7">R$</span> 47,00</span></div>
       <div class="desc" style="color:rgba(255,255,255,.7)">Você paga uma vez e usa para sempre.<br>Atualizações gratuitas vitalícias.</div>
       <ul class="benefits" style="color:rgba(255,255,255,.8)">
         <li>Acesso imediato — link enviado após confirmação do PIX</li>
@@ -622,7 +621,7 @@ fbq('track', 'PageView');
 </footer>
 
 <div class="sticky-bottom" id="stickyBar">
-  <div class="info"><strong>Planilha MEI Definitiva</strong> — <s>R$ 197</s> <strong style="color:#00E676">R$ 47</strong></div>
+  <div class="info"><strong>Planilha MEI Definitiva</strong> — <s>R$ 197</s> <strong style="color:#00E676"><span class="moeda">R$</span> 47</strong></div>
   <a href="https://pay.cakto.com.br/cfh3gr2_980898" class="btn-small" target="_blank" onclick="fbq('track', 'InitiateCheckout');">🔥 COMPRAR</a>
 </div>
 
@@ -635,3 +634,22 @@ document.querySelectorAll('.faq-item .q').forEach(function(q){
 // Timer 8h
 (function(){
   var end = new Date().getTime() + 8*60*60*1000;
+  function tick(){
+    var diff = end - new Date().getTime();
+    if(diff<=0){['timerH','timerM','timerS'].forEach(function(id){document.getElementById(id).textContent='00';});return;}
+    document.getElementById('timerH').textContent=String(Math.floor(diff/(60*60*1000))).padStart(2,'0');
+    document.getElementById('timerM').textContent=String(Math.floor((diff%(60*60*1000))/(60*1000))).padStart(2,'0');
+    document.getElementById('timerS').textContent=String(Math.floor((diff%(60*1000))/1000)).padStart(2,'0');
+  }
+  tick();setInterval(tick,1000);
+})();
+
+// Sticky bar
+window.addEventListener('scroll',function(){
+  var bar=document.getElementById('stickyBar');
+  bar.classList.toggle('show',window.scrollY>120);
+});
+window.dispatchEvent(new Event('scroll'));
+</script>
+</body>
+</html>
