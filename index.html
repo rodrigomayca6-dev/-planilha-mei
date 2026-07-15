@@ -190,7 +190,7 @@ fbq('track', 'PageView');
     <span class="price-current" style="font-size:48px;vertical-align:middle">R$ 47,00</span>
   </div>
   <p class="price-small">à vista no PIX — Acesso vitalício + atualizações gratuitas</p>
-  <a href="#comprar" class="btn-hero">🔥 QUERO ORGANIZAR MEU MEI</a>
+  <a href="https://pay.cakto.com.br/cfh3gr2_980898" class="btn-hero" target="_blank" onclick="fbq('track', 'InitiateCheckout');">🔥 QUERO ORGANIZAR MEU MEI</a>
   <div class="trust">
     <span>Acesso imediato via PIX</span>
     <span>Não precisa de Excel</span>
@@ -267,7 +267,7 @@ fbq('track', 'PageView');
         <li><strong>Relatório contábil</strong> pronto para imprimir</li>
       </ul>
       <div class="sec-btn">
-        <a href="#comprar" class="btn-hero btn-hero-2" style="font-size:15px;padding:13px 32px">🔥 QUERO MINHA PLANILHA AGORA</a>
+        <a href="https://pay.cakto.com.br/cfh3gr2_980898" class="btn-hero btn-hero-2" style="font-size:15px;padding:13px 32px" target="_blank" onclick="fbq('track', 'InitiateCheckout');">🔥 QUERO MINHA PLANILHA AGORA</a>
       </div>
     </div>
     <div class="mockup">
@@ -623,7 +623,7 @@ fbq('track', 'PageView');
 
 <div class="sticky-bottom" id="stickyBar">
   <div class="info"><strong>Planilha MEI Definitiva</strong> — <s>R$ 197</s> <strong style="color:#00E676">R$ 47</strong></div>
-  <a href="#comprar" class="btn-small">🔥 COMPRAR</a>
+  <a href="https://pay.cakto.com.br/cfh3gr2_980898" class="btn-small" target="_blank" onclick="fbq('track', 'InitiateCheckout');">🔥 COMPRAR</a>
 </div>
 
 <script>
@@ -635,22 +635,3 @@ document.querySelectorAll('.faq-item .q').forEach(function(q){
 // Timer 8h
 (function(){
   var end = new Date().getTime() + 8*60*60*1000;
-  function tick(){
-    var diff = end - new Date().getTime();
-    if(diff<=0){['timerH','timerM','timerS'].forEach(function(id){document.getElementById(id).textContent='00';});return;}
-    document.getElementById('timerH').textContent=String(Math.floor(diff/(60*60*1000))).padStart(2,'0');
-    document.getElementById('timerM').textContent=String(Math.floor((diff%(60*60*1000))/(60*1000))).padStart(2,'0');
-    document.getElementById('timerS').textContent=String(Math.floor((diff%(60*1000))/1000)).padStart(2,'0');
-  }
-  tick();setInterval(tick,1000);
-})();
-
-// Sticky bar
-window.addEventListener('scroll',function(){
-  var bar=document.getElementById('stickyBar');
-  bar.classList.toggle('show',window.scrollY>120);
-});
-window.dispatchEvent(new Event('scroll'));
-</script>
-</body>
-</html>
